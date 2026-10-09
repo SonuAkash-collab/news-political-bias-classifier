@@ -1,0 +1,126 @@
+{
+  "model_zoo": {
+    "dataset": "congresstweets with House member party labels",
+    "feature_type": "count",
+    "text_variant": "no_punct",
+    "min_df": 2,
+    "split": {
+      "method": "GroupShuffleSplit",
+      "group": "member_id",
+      "test_size": 0.2,
+      "seed": 42,
+      "train_rows": 99273,
+      "test_rows": 22703,
+      "train_members": 360,
+      "test_members": 90,
+      "train_party_counts": {
+        "D": 64243,
+        "R": 35030
+      },
+      "test_party_counts": {
+        "D": 13893,
+        "R": 8810
+      },
+      "full_party_counts": {
+        "D": 78136,
+        "R": 43840
+      }
+    },
+    "tuning": {
+      "method": "GroupKFold",
+      "group": "member_id",
+      "folds": 5,
+      "training_only": true,
+      "selection_metric": "macro_f1",
+      "C_grid": [
+        0.01,
+        0.06,
+        0.1,
+        1.0
+      ],
+      "selected": {
+        "linear_svc_c": 0.1,
+        "linear_svc_balanced_c": 0.06,
+        "logistic_c": 1.0,
+        "logistic_balanced_c": 1.0,
+        "complement_alpha": 0.1
+      },
+      "paper_C": 0.06,
+      "paper_test_set_tuning_leakage": true
+    },
+    "majority_baseline": {
+      "always_predict": "D",
+      "accuracy": 0.61194555785579,
+      "macro_f1": 0.3796316537326484
+    },
+    "scores": {
+      "majority_baseline": {
+        "accuracy": 0.61194555785579,
+        "macro_f1": 0.3796316537326484,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.0,
+        "macro_f1_delta_vs_baseline": 0.0
+      },
+      "linear_svc": {
+        "accuracy": 0.8086156014623618,
+        "macro_f1": 0.7919925055797965,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.1966700436065718,
+        "macro_f1_delta_vs_baseline": 0.4123608518471481
+      },
+      "linear_svc_balanced": {
+        "accuracy": 0.8084394132933973,
+        "macro_f1": 0.7992156628973321,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.19649385543760733,
+        "macro_f1_delta_vs_baseline": 0.41958400916468375
+      },
+      "logistic_regression": {
+        "accuracy": 0.809496542307184,
+        "macro_f1": 0.7934275872472584,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.19755098445139407,
+        "macro_f1_delta_vs_baseline": 0.41379593351460997
+      },
+      "logistic_regression_balanced": {
+        "accuracy": 0.8076025194908162,
+        "macro_f1": 0.7982303581498642,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.19565696163502622,
+        "macro_f1_delta_vs_baseline": 0.4185987044172158
+      },
+      "complement_nb": {
+        "accuracy": 0.8014799806193014,
+        "macro_f1": 0.790710483237508,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.1895344227635114,
+        "macro_f1_delta_vs_baseline": 0.41107882950485963
+      },
+      "rbf_svm": {
+        "accuracy": 0.6963837378320046,
+        "macro_f1": 0.6010515024826416,
+        "majority_baseline_accuracy": 0.61194555785579,
+        "majority_baseline_macro_f1": 0.3796316537326484,
+        "accuracy_delta_vs_baseline": 0.08443817997621461,
+        "macro_f1_delta_vs_baseline": 0.2214198487499932
+      }
+    },
+    "models": {
+      "majority_baseline": "models\\majority_baseline.joblib",
+      "linear_svc": "models\\linear_svc.joblib",
+      "linear_svc_balanced": "models\\linear_svc_balanced.joblib",
+      "logistic_regression": "models\\logistic_regression.joblib",
+      "logistic_regression_balanced": "models\\logistic_regression_balanced.joblib",
+      "complement_nb": "models\\complement_nb.joblib",
+      "rbf_svm": "models\\rbf_svm.joblib"
+    },
+    "figure": "results\\figures\\model_zoo.png",
+    "rbf_svm_training_subsample": 5000
+  }
+}
