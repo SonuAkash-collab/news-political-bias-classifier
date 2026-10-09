@@ -5,8 +5,8 @@ import pytest
 import scipy.sparse as sp
 from sklearn import naive_bayes as sk
 
-from polibias.features import binary_vectorizer
-from polibias.models.naive_bayes import BernoulliNB
+from polibias.features import binary_vectorizer, count_vectorizer
+from polibias.models.naive_bayes import BernoulliNB, MultinomialNB
 
 TOL = 1e-6
 
@@ -21,15 +21,16 @@ def count_data(n_classes: int, seed: int = 42):
     return X_train, y_train, X_test
 
 
+@pytest.mark.parametrize("ours_cls, ref_cls", [(BernoulliNB, sk.BernoulliNB), (MultinomialNB, sk.MultinomialNB)])
 @pytest.mark.parametrize("n_classes", [2, 3])
 @pytest.mark.parametrize("sparse", [False, True])
-def test_bernoulli_matches_sklearn(n_classes, sparse):
+def test_matches_sklearn(ours_cls, ref_cls, n_classes, sparse):
     X_train, y_train, X_test = count_data(n_classes)
     if sparse:
         X_train, X_test = sp.csr_matrix(X_train), sp.csr_matrix(X_test)
 
-    ours = BernoulliNB().fit(X_train, y_train)
-    ref = sk.BernoulliNB(alpha=1.0).fit(X_train, y_train)
+    ours = ours_cls().fit(X_train, y_train)
+    ref = ref_cls(alpha=1.0).fit(X_train, y_train)
 
     assert list(ours.classes_) == list(ref.classes_)
     np.testing.assert_allclose(ours.class_log_prior_, ref.class_log_prior_, rtol=0, atol=TOL)
@@ -38,7 +39,11 @@ def test_bernoulli_matches_sklearn(n_classes, sparse):
     assert (ours.predict(X_test) == ref.predict(X_test)).all()
 
 
-def test_bernoulli_on_tweets_through_vectoriser():
+@pytest.mark.parametrize(
+    "ours_cls, ref_cls, make_vec",
+    [(BernoulliNB, sk.BernoulliNB, binary_vectorizer), (MultinomialNB, sk.MultinomialNB, count_vectorizer)],
+)
+def test_on_tweets_through_vectoriser(ours_cls, ref_cls, make_vec):
     train = [
         "Protect voting rights #ForThePeople",
         "Voting rights and health care for all",
@@ -50,18 +55,19 @@ def test_bernoulli_on_tweets_through_vectoriser():
     y = ["D", "D", "R", "R", "D", "R"]
     test = ["voting rights now", "cut taxes", "border health"]
 
-    vec = binary_vectorizer("no_punct")
+    vec = make_vec("no_punct")
     X_train, X_test = vec.fit_transform(train), vec.transform(test)
-    ours = BernoulliNB().fit(X_train, y)
-    ref = sk.BernoulliNB(alpha=1.0).fit(X_train, y)
+    ours = ours_cls().fit(X_train, y)
+    ref = ref_cls(alpha=1.0).fit(X_train, y)
     np.testing.assert_allclose(ours.predict_proba(X_test), ref.predict_proba(X_test), rtol=0, atol=TOL)
     assert (ours.predict(X_test) == ref.predict(X_test)).all()
     assert list(ours.predict(X_test[:2])) == ["D", "R"]
 
 
-def test_probabilities_sum_to_one_and_wrong_width_is_rejected():
+@pytest.mark.parametrize("model_cls", [BernoulliNB, MultinomialNB])
+def test_probabilities_sum_to_one_and_wrong_width_is_rejected(model_cls):
     X_train, y_train, X_test = count_data(2)
-    model = BernoulliNB().fit(X_train, y_train)
+    model = model_cls().fit(X_train, y_train)
     np.testing.assert_allclose(model.predict_proba(X_test).sum(axis=1), 1.0)
     with pytest.raises(ValueError):
         model.predict(X_test[:, :10])

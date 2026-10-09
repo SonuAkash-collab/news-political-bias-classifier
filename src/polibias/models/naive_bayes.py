@@ -97,3 +97,24 @@ class BernoulliNB(_NaiveBayes):
         # The second form only touches the words present in x, which keeps X sparse.
         log_odds = self.feature_log_prob_ - self.neg_feature_log_prob_
         return X @ log_odds.T + self.neg_feature_log_prob_.sum(axis=1) + self.class_log_prior_
+
+
+class MultinomialNB(_NaiveBayes):
+    """Naive Bayes with the multinomial event model: features are word counts.
+
+    After fit, feature_log_prob_[c, j] = log p(word = j | y = c), the probability that a single
+    word drawn from a document of class c is word j.
+    """
+
+    def _fit_feature_probs(self) -> None:
+        # phi_{j|y} = (alpha + count of word j in class y) / (alpha |V| + total words in class y).
+        # The total words in class y is sum_i 1{y_i = y} d_i, the paper's denominator, counting
+        # only words that are in the vocabulary so that the phi_{j|y} sum to 1 over j.
+        numerator = self.feature_count_ + self.alpha
+        denominator = self.feature_count_.sum(axis=1, keepdims=True) + self.alpha * self.n_features_in_
+        self.feature_log_prob_ = np.log(numerator) - np.log(denominator)
+
+    def _joint_log_likelihood(self, X: sp.csr_matrix) -> np.ndarray:
+        # log p(x | y) = sum_j x_j log phi_{j|y}, plus a multinomial coefficient that is the same
+        # for every class and cancels in predict_proba, so it is left out.
+        return X @ self.feature_log_prob_.T + self.class_log_prior_
