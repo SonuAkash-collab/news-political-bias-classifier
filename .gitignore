@@ -14,6 +14,7 @@ env/
 # Data and large outputs (re-created by the download and run scripts)
 data/raw/
 data/interim/
+data/processed/
 *.zip
 
 # Editors and OS
