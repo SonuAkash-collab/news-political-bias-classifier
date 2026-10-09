@@ -33,15 +33,17 @@ USERS_URL = (
     "master/data/historical-users-filtered.json"
 )
 
-# Colour palette
-INK = "#1C2230"
-PAPER = "#F4F1EA"
-ACCENT = "#C47F2C"
-MUTED = "#6B7280"
-DEM = "#2E5E8C"
-CENTER = "#9AA0A6"
-REP = "#A33B3B"
-PARTY_COLORS = {"D": DEM, "R": REP, "left": DEM, "center": CENTER, "right": REP}
+# Colour palette (team palette from PROJECT_CONTEXT.md, "Visual style")
+MIDNIGHT = "#051218"  # main dark colour, body text on light
+DEEP_TEAL = "#053944"  # secondary dark
+OCEAN_TEAL = "#0A5C68"  # mid-tone accents
+TURQUOISE = "#088192"  # accent; Democratic / left
+GOLD = "#BCAC79"  # highlight; Republican / right
+GOLD_DARK = "#9C8A4F"  # gold that stays visible on light backgrounds
+LIGHT = "#F2EFE6"  # off-white background
+MUTED = "#5B6B70"  # muted text and grid lines
+CENTER = "#8A949A"  # center grey
+PARTY_COLORS = {"D": TURQUOISE, "R": GOLD, "left": TURQUOISE, "center": CENTER, "right": GOLD}
 
 
 def set_seed(seed: int = SEED) -> None:
