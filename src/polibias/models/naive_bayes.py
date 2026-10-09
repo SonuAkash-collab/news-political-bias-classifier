@@ -54,6 +54,26 @@ class _NaiveBayes:
         jll = self._joint_log_likelihood(self._prepare(X, fitting=False))
         return self.classes_[np.argmax(jll, axis=1)]
 
+    def top_words(self, n: int, feature_names) -> dict:
+        """The n words most indicative of each class, by the paper's log ratio (Section 4.1).
+
+        For two classes a and b (classes_ in sorted order, so "D" and "R"), word j scores
+        log p(w_j | a) / p(w_j | b) for class a and the negative of that for class b.
+        feature_names is the vectoriser's get_feature_names_out(); the model never sees the words.
+        Returns {class: [(word, log ratio), ...]}, highest ratio first.
+        """
+        if len(self.classes_) != 2:
+            raise ValueError("top_words needs exactly two classes")
+        feature_names = np.asarray(feature_names)
+        if len(feature_names) != self.n_features_in_:
+            raise ValueError(f"Got {len(feature_names)} feature names for {self.n_features_in_} features")
+        log_ratio = self.feature_log_prob_[0] - self.feature_log_prob_[1]
+        result = {}
+        for label, score in zip(self.classes_, (log_ratio, -log_ratio)):
+            best = np.argsort(-score, kind="stable")[:n]  # stable: ties keep vocabulary order
+            result[label] = [(str(feature_names[j]), float(score[j])) for j in best]
+        return result
+
     def _prepare(self, X, fitting: bool = True) -> sp.csr_matrix:
         X = sp.csr_matrix(X, dtype=np.float64)
         if X.nnz and X.data.min() < 0:

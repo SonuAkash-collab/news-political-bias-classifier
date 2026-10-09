@@ -71,3 +71,33 @@ def test_probabilities_sum_to_one_and_wrong_width_is_rejected(model_cls):
     np.testing.assert_allclose(model.predict_proba(X_test).sum(axis=1), 1.0)
     with pytest.raises(ValueError):
         model.predict(X_test[:, :10])
+
+
+@pytest.mark.parametrize("model_cls", [BernoulliNB, MultinomialNB])
+def test_top_words(model_cls):
+    train = ["voting rights", "voting rights now", "health care", "cut taxes", "cut taxes now", "border"]
+    y = ["D", "D", "D", "R", "R", "R"]
+    vec = binary_vectorizer("all_words")
+    model = model_cls().fit(vec.fit_transform(train), y)
+
+    top = model.top_words(2, vec.get_feature_names_out())
+    assert [w for w, _ in top["D"]] == ["rights", "voting"]
+    assert [w for w, _ in top["R"]] == ["cut", "taxes"]
+
+    # The score is exactly log p(w | D) - log p(w | R).
+    words = list(vec.get_feature_names_out())
+    j = words.index("rights")
+    expected = model.feature_log_prob_[0, j] - model.feature_log_prob_[1, j]
+    assert top["D"][0][1] == pytest.approx(expected)
+
+
+def test_top_words_bernoulli_value_by_hand():
+    # "rights": in 2 of 3 D docs and 0 of 3 R docs. Laplace: p(D) = 3/5, p(R) = 1/5, ratio log 3.
+    train = ["voting rights", "voting rights now", "health care", "cut taxes", "cut taxes now", "border"]
+    y = ["D", "D", "D", "R", "R", "R"]
+    vec = binary_vectorizer("all_words")
+    model = BernoulliNB().fit(vec.fit_transform(train), y)
+    scores = dict(model.top_words(20, vec.get_feature_names_out())["D"])
+    assert scores["rights"] == pytest.approx(np.log(3))
+    with pytest.raises(ValueError):
+        model.top_words(2, ["too", "few"])
