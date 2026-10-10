@@ -1,0 +1,149 @@
+{
+  "description": "Extension 3: In-domain training on AllSides news articles (media-based split). Evaluates binary (left vs right) and 3-class (left vs center vs right) accuracy to quantify the cost of the tweet-to-article domain gap.",
+  "split_type": "media-based",
+  "binary_task": {
+    "train_samples": 19102,
+    "test_samples": 1001,
+    "scores": {
+      "bernoulli_nb": {
+        "accuracy": 0.6393606393606394,
+        "macro_f1": 0.6073038073038073,
+        "accuracy_ci": [
+          0.6091326211712894,
+          0.6685230809811692
+        ],
+        "confusion_matrix": [
+          [
+            177,
+            225
+          ],
+          [
+            136,
+            463
+          ]
+        ]
+      },
+      "multinomial_nb": {
+        "accuracy": 0.6223776223776224,
+        "macro_f1": 0.6131009349922698,
+        "accuracy_ci": [
+          0.591930839973973,
+          0.6518886834215553
+        ],
+        "confusion_matrix": [
+          [
+            234,
+            168
+          ],
+          [
+            210,
+            389
+          ]
+        ]
+      },
+      "linear_svc": {
+        "accuracy": 0.6653346653346653,
+        "macro_f1": 0.6580604373473643,
+        "accuracy_ci": [
+          0.6355192624308632,
+          0.6938858895851361
+        ],
+        "confusion_matrix": [
+          [
+            260,
+            142
+          ],
+          [
+            193,
+            406
+          ]
+        ]
+      },
+      "linear_svc_balanced": {
+        "accuracy": 0.6653346653346653,
+        "macro_f1": 0.6580604373473643,
+        "accuracy_ci": [
+          0.6355192624308632,
+          0.6938858895851361
+        ],
+        "confusion_matrix": [
+          [
+            260,
+            142
+          ],
+          [
+            193,
+            406
+          ]
+        ]
+      }
+    },
+    "best_model": "linear_svc",
+    "best_accuracy": 0.6653346653346653
+  },
+  "three_class_task": {
+    "train_samples": 26590,
+    "test_samples": 1300,
+    "scores": {
+      "multinomial_nb": {
+        "accuracy": 0.536923076923077,
+        "macro_f1": 0.5311099196466478,
+        "accuracy_ci": [
+          0.5097479332647601,
+          0.5638806424763423
+        ],
+        "confusion_matrix": [
+          [
+            203,
+            70,
+            129
+          ],
+          [
+            23,
+            165,
+            111
+          ],
+          [
+            162,
+            107,
+            330
+          ]
+        ]
+      },
+      "linear_svc": {
+        "accuracy": 0.4907692307692308,
+        "macro_f1": 0.4717785169191068,
+        "accuracy_ci": [
+          0.46366080142867533,
+          0.5179320546360493
+        ],
+        "confusion_matrix": [
+          [
+            202,
+            93,
+            107
+          ],
+          [
+            82,
+            116,
+            101
+          ],
+          [
+            153,
+            126,
+            320
+          ]
+        ]
+      }
+    }
+  },
+  "saved_model": {
+    "path": "models/ext3_in_domain.joblib",
+    "model_name": "linear_svc",
+    "size_mb": 1.03,
+    "size_bytes": 1080798
+  },
+  "figures": {
+    "in_domain_summary": "results/figures/ext3_in_domain.png"
+  }
+}
