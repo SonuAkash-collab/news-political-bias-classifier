@@ -1,0 +1,441 @@
+{
+  "description": "Extension 1: TF-IDF word unigrams + bigrams (no_punct) with logistic regression",
+  "quick_run": false,
+  "data": {
+    "tweets": 121976,
+    "members": 450,
+    "article_test": 1001,
+    "article_test_party_counts": {
+      "R": 599,
+      "D": 402
+    }
+  },
+  "split": {
+    "train_rows": 99273,
+    "test_rows": 22703,
+    "train_members": 360,
+    "test_members": 90,
+    "shared_members": 0,
+    "test_party_counts": {
+      "D": 13893,
+      "R": 8810
+    }
+  },
+  "settings": {
+    "variant": "no_punct",
+    "ngram_range": [
+      1,
+      2
+    ],
+    "sublinear_tf": true,
+    "classifier": "LogisticRegression(solver='liblinear')",
+    "article_text": "title + content"
+  },
+  "tuning": {
+    "method": "GroupKFold",
+    "group": "member_id",
+    "folds": 5,
+    "training_only": true,
+    "selection_metric": "macro_f1",
+    "grid": {
+      "C": [
+        0.3,
+        1.0,
+        3.0,
+        10.0,
+        30.0
+      ],
+      "min_df": [
+        2,
+        5,
+        10
+      ],
+      "class_weight": [
+        null,
+        "balanced"
+      ]
+    },
+    "selected": {
+      "C": 10.0,
+      "min_df": 2,
+      "class_weight": "balanced"
+    },
+    "best_cv_macro_f1": 0.7892378835228439,
+    "cv_results": [
+      {
+        "C": 10.0,
+        "min_df": 2,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7892378835228439,
+        "std_macro_f1": 0.01033738695624152,
+        "rank": 1
+      },
+      {
+        "C": 10.0,
+        "min_df": 2,
+        "class_weight": null,
+        "mean_macro_f1": 0.7886263274079517,
+        "std_macro_f1": 0.014829158617451967,
+        "rank": 2
+      },
+      {
+        "C": 30.0,
+        "min_df": 2,
+        "class_weight": null,
+        "mean_macro_f1": 0.7879408170205414,
+        "std_macro_f1": 0.013765427085918897,
+        "rank": 3
+      },
+      {
+        "C": 30.0,
+        "min_df": 2,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7877161548590069,
+        "std_macro_f1": 0.011084167194889053,
+        "rank": 4
+      },
+      {
+        "C": 3.0,
+        "min_df": 2,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7867802762386203,
+        "std_macro_f1": 0.0102649993948598,
+        "rank": 5
+      },
+      {
+        "C": 10.0,
+        "min_df": 5,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7854839858606705,
+        "std_macro_f1": 0.011121827826809986,
+        "rank": 6
+      },
+      {
+        "C": 3.0,
+        "min_df": 5,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7852000992777651,
+        "std_macro_f1": 0.010460945322310835,
+        "rank": 7
+      },
+      {
+        "C": 10.0,
+        "min_df": 5,
+        "class_weight": null,
+        "mean_macro_f1": 0.7851485236048599,
+        "std_macro_f1": 0.013961980273551314,
+        "rank": 8
+      },
+      {
+        "C": 3.0,
+        "min_df": 2,
+        "class_weight": null,
+        "mean_macro_f1": 0.7845551273889869,
+        "std_macro_f1": 0.01578378857560213,
+        "rank": 9
+      },
+      {
+        "C": 3.0,
+        "min_df": 5,
+        "class_weight": null,
+        "mean_macro_f1": 0.7835708042641651,
+        "std_macro_f1": 0.015411031408198451,
+        "rank": 10
+      },
+      {
+        "C": 10.0,
+        "min_df": 10,
+        "class_weight": null,
+        "mean_macro_f1": 0.7829066298253089,
+        "std_macro_f1": 0.013391000712030277,
+        "rank": 11
+      },
+      {
+        "C": 30.0,
+        "min_df": 5,
+        "class_weight": null,
+        "mean_macro_f1": 0.7821261503843098,
+        "std_macro_f1": 0.013582651935499358,
+        "rank": 12
+      },
+      {
+        "C": 3.0,
+        "min_df": 10,
+        "class_weight": null,
+        "mean_macro_f1": 0.7814409291603598,
+        "std_macro_f1": 0.014587307626199452,
+        "rank": 13
+      },
+      {
+        "C": 3.0,
+        "min_df": 10,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7813734412469723,
+        "std_macro_f1": 0.010764840978919672,
+        "rank": 14
+      },
+      {
+        "C": 30.0,
+        "min_df": 5,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7813145288649138,
+        "std_macro_f1": 0.010697336547189889,
+        "rank": 15
+      },
+      {
+        "C": 10.0,
+        "min_df": 10,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7800688260278072,
+        "std_macro_f1": 0.011187716304297277,
+        "rank": 16
+      },
+      {
+        "C": 1.0,
+        "min_df": 2,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.779936879105282,
+        "std_macro_f1": 0.009430111561415004,
+        "rank": 17
+      },
+      {
+        "C": 1.0,
+        "min_df": 5,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7794756893387296,
+        "std_macro_f1": 0.010130617293743866,
+        "rank": 18
+      },
+      {
+        "C": 1.0,
+        "min_df": 10,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7776427828933592,
+        "std_macro_f1": 0.009909587494377212,
+        "rank": 19
+      },
+      {
+        "C": 30.0,
+        "min_df": 10,
+        "class_weight": null,
+        "mean_macro_f1": 0.7766661991273519,
+        "std_macro_f1": 0.01321327962649656,
+        "rank": 20
+      },
+      {
+        "C": 30.0,
+        "min_df": 10,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.774203317988159,
+        "std_macro_f1": 0.011833559766760695,
+        "rank": 21
+      },
+      {
+        "C": 1.0,
+        "min_df": 10,
+        "class_weight": null,
+        "mean_macro_f1": 0.7722318250486384,
+        "std_macro_f1": 0.017077139031960144,
+        "rank": 22
+      },
+      {
+        "C": 1.0,
+        "min_df": 5,
+        "class_weight": null,
+        "mean_macro_f1": 0.7720269499888797,
+        "std_macro_f1": 0.017403137274251128,
+        "rank": 23
+      },
+      {
+        "C": 1.0,
+        "min_df": 2,
+        "class_weight": null,
+        "mean_macro_f1": 0.7703205037054845,
+        "std_macro_f1": 0.017105777558496668,
+        "rank": 24
+      },
+      {
+        "C": 0.3,
+        "min_df": 5,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.764993994203093,
+        "std_macro_f1": 0.008375453290614687,
+        "rank": 25
+      },
+      {
+        "C": 0.3,
+        "min_df": 10,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7645711054208687,
+        "std_macro_f1": 0.008735669550693655,
+        "rank": 26
+      },
+      {
+        "C": 0.3,
+        "min_df": 2,
+        "class_weight": "balanced",
+        "mean_macro_f1": 0.7629493724181305,
+        "std_macro_f1": 0.009745704922225516,
+        "rank": 27
+      },
+      {
+        "C": 0.3,
+        "min_df": 10,
+        "class_weight": null,
+        "mean_macro_f1": 0.7440045599571661,
+        "std_macro_f1": 0.01911844838199246,
+        "rank": 28
+      },
+      {
+        "C": 0.3,
+        "min_df": 5,
+        "class_weight": null,
+        "mean_macro_f1": 0.7397644729198802,
+        "std_macro_f1": 0.020267603232350006,
+        "rank": 29
+      },
+      {
+        "C": 0.3,
+        "min_df": 2,
+        "class_weight": null,
+        "mean_macro_f1": 0.73196711310342,
+        "std_macro_f1": 0.022578633220115014,
+        "rank": 30
+      }
+    ]
+  },
+  "tweet_test": {
+    "ext1": {
+      "accuracy": 0.8331498039906621,
+      "macro_f1": 0.823567087765402,
+      "confusion_matrix": [
+        [
+          12103,
+          1790
+        ],
+        [
+          1998,
+          6812
+        ]
+      ]
+    },
+    "tfidf_unigrams_only": {
+      "accuracy": 0.8123596000528565,
+      "macro_f1": 0.8035909141679275,
+      "confusion_matrix": [
+        [
+          11620,
+          2273
+        ],
+        [
+          1987,
+          6823
+        ]
+      ]
+    },
+    "majority_baseline": {
+      "always_predict": "D",
+      "accuracy": 0.61194555785579,
+      "macro_f1": 0.3796316537326484,
+      "confusion_matrix": [
+        [
+          13893,
+          0
+        ],
+        [
+          8810,
+          0
+        ]
+      ]
+    },
+    "exp1_grouped_no_punct": {
+      "bernoulli_nb": {
+        "accuracy": 0.7862837510461173,
+        "macro_f1": 0.7568834101754656
+      },
+      "multinomial_nb": {
+        "accuracy": 0.7891908558340307,
+        "macro_f1": 0.7627351125825892
+      },
+      "linear_svc": {
+        "accuracy": 0.812183411883892,
+        "macro_f1": 0.7947129421432699
+      }
+    },
+    "best_previous_name": "LinearSVC (C=0.06)",
+    "best_previous": {
+      "accuracy": 0.812183411883892,
+      "macro_f1": 0.7947129421432699
+    }
+  },
+  "article_test": {
+    "ext1": {
+      "accuracy": 0.5924075924075924,
+      "macro_f1": 0.5910816699240653,
+      "confusion_matrix": [
+        [
+          268,
+          134
+        ],
+        [
+          274,
+          325
+        ]
+      ]
+    },
+    "paper_linear_svc_counts": {
+      "accuracy": 0.5974025974025974,
+      "macro_f1": 0.5865743212705623,
+      "confusion_matrix": [
+        [
+          218,
+          184
+        ],
+        [
+          219,
+          380
+        ]
+      ]
+    },
+    "majority_baseline": {
+      "always_predict": "D",
+      "accuracy": 0.4015984015984016,
+      "macro_f1": 0.28652886671418387,
+      "confusion_matrix": [
+        [
+          402,
+          0
+        ],
+        [
+          599,
+          0
+        ]
+      ]
+    },
+    "article_majority_baseline": {
+      "always_predict": "R",
+      "accuracy": 0.5984015984015985,
+      "macro_f1": 0.374375,
+      "confusion_matrix": [
+        [
+          0,
+          402
+        ],
+        [
+          0,
+          599
+        ]
+      ]
+    },
+    "exp3": null
+  },
+  "model": {
+    "path": "models/ext1_tfidf_lr.joblib",
+    "trained_on": "all tweets",
+    "min_df": 2,
+    "size_mb": 7.19,
+    "vocabulary_size": 379073
+  },
+  "verdict": "Held-out members: TF-IDF + bigrams + LR reaches macro F1 0.824 (accuracy 0.833), better than the best earlier model LinearSVC (C=0.06) (0.795, +2.9 points). Articles: macro F1 0.591 (accuracy 0.592), about the same as the paper's count LinearSVC on the same articles (0.587, +0.5 points). Its article accuracy is not above always predicting R (0.598, the article test majority).",
+  "figure": "results/figures/ext1_tfidf_lr.png"
+}
