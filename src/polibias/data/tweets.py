@@ -111,6 +111,17 @@ def build(users_file: Path = config.USERS_FILE, tweets_dir: Path = config.RAW_TW
     return df, stats
 
 
+def load_processed(path: Path = config.TWEETS_CSV) -> pd.DataFrame:
+    """Read data/processed/tweets.csv: one row per labelled D or R tweet, with text and member_id."""
+    if not Path(path).exists():
+        raise FileNotFoundError(
+            f"Missing {path}. Run scripts/download_tweets.py and python -m polibias.data.tweets first."
+        )
+    df = pd.read_csv(path, dtype={"text": str, "member_id": str, "party": str})
+    df = df.dropna(subset=["text", "member_id", "party"])
+    return df[df["party"].isin(PARTIES)].reset_index(drop=True)
+
+
 def print_summary(stats: dict) -> None:
     kept = stats["kept_tweets"]
     d, r = stats["party_tweets"].get("D", 0), stats["party_tweets"].get("R", 0)
