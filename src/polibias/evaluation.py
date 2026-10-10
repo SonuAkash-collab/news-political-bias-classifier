@@ -137,7 +137,7 @@ def majority_baseline(y_train, y_test) -> dict:
 def write_results(result: dict, path: Path) -> None:
     """Write one experiment's results as JSON (one file per experiment avoids merge conflicts)."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def relative_path(path: Path) -> str:
