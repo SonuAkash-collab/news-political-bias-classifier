@@ -142,7 +142,10 @@ def write_results(result: dict, path: Path) -> None:
 
 def relative_path(path: Path) -> str:
     """Path relative to the repository root with forward slashes, for storing in results."""
-    return Path(path).resolve().relative_to(config.ROOT).as_posix()
+    try:
+        return Path(path).resolve().relative_to(config.ROOT).as_posix()
+    except ValueError:
+        return Path(path).as_posix()
 
 
 # Plotting
