@@ -1,0 +1,217 @@
+{
+  "description": "Train tweet-trained models on all tweets, predict binary left/right AllSides article test set (media-based split, left=D, right=R).",
+  "tweet_training_data": {
+    "n_rows": 121976,
+    "party_counts": {
+      "D": 78136,
+      "R": 43840
+    },
+    "fraction_D": 0.6405850331212698,
+    "note": "Tweets are 64.1% D; models may be biased toward predicting D on unlabelled text."
+  },
+  "article_test_set": {
+    "split_type": "media-based",
+    "n_rows": 1001,
+    "party_counts": {
+      "D": 402,
+      "R": 599
+    },
+    "note": "Center articles excluded; left=D, right=R."
+  },
+  "paper_results": {
+    "n_articles": 100,
+    "scores": {
+      "bernoulli_nb": 0.58,
+      "multinomial_nb": 0.55,
+      "linear_svc_paper_c": 0.63
+    },
+    "paper_ci_95": {
+      "bernoulli_nb": [
+        0.4820630799889527,
+        0.672017750814887
+      ],
+      "multinomial_nb": [
+        0.45244427031643447,
+        0.6438562489359654
+      ],
+      "linear_svc_paper_c": [
+        0.5322034757513312,
+        0.7181778743049083
+      ]
+    },
+    "note": "100 poll-labelled articles from the paper; wide CIs show how noisy that test set is."
+  },
+  "text_settings": {
+    "variant": "no_punct",
+    "min_df": 2
+  },
+  "c_paper": 0.06,
+  "c_tuned": 0.1,
+  "scores": {
+    "majority_baseline": {
+      "accuracy": 0.4015984015984016,
+      "macro_f1": 0.28652886671418387,
+      "accuracy_ci": [
+        0.37166130971180183,
+        0.4322878898436305
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.0,
+      "macro_f1_delta_vs_baseline": 0.0,
+      "fraction_predicted_D": 1.0
+    },
+    "bernoulli_nb": {
+      "accuracy": 0.6063936063936064,
+      "macro_f1": 0.5901974231088944,
+      "accuracy_ci": [
+        0.5757765556350765,
+        0.6361971524598113
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.2047952047952048,
+      "macro_f1_delta_vs_baseline": 0.3036685563947106,
+      "fraction_predicted_D": 0.3996003996003996
+    },
+    "multinomial_nb": {
+      "accuracy": 0.6053946053946054,
+      "macro_f1": 0.5539321368094124,
+      "accuracy_ci": [
+        0.5747680406000419,
+        0.635215304038556
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.20379620379620383,
+      "macro_f1_delta_vs_baseline": 0.2674032700952286,
+      "fraction_predicted_D": 0.25874125874125875
+    },
+    "linear_svc_paper_c0.06": {
+      "accuracy": 0.5774225774225774,
+      "macro_f1": 0.5694754983452042,
+      "accuracy_ci": [
+        0.5465824590484133,
+        0.6076707088140637
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.1758241758241758,
+      "macro_f1_delta_vs_baseline": 0.2829466316310203,
+      "fraction_predicted_D": 0.46253746253746253
+    },
+    "linear_svc_tuned_c0.1": {
+      "accuracy": 0.5844155844155844,
+      "macro_f1": 0.5744743468166509,
+      "accuracy_ci": [
+        0.5536193695211532,
+        0.6145663425353539
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.1828171828171828,
+      "macro_f1_delta_vs_baseline": 0.287945480102467,
+      "fraction_predicted_D": 0.44555444555444557
+    },
+    "linear_svc_balanced_c0.1": {
+      "accuracy": 0.5804195804195804,
+      "macro_f1": 0.575751582278481,
+      "accuracy_ci": [
+        0.5495975104361767,
+        0.6106267477951705
+      ],
+      "majority_baseline_accuracy": 0.4015984015984016,
+      "majority_baseline_macro_f1": 0.28652886671418387,
+      "accuracy_delta_vs_baseline": 0.17882117882117882,
+      "macro_f1_delta_vs_baseline": 0.28922271556429713,
+      "fraction_predicted_D": 0.4935064935064935
+    }
+  },
+  "error_analysis": {
+    "model": "linear_svc_tuned_c0.1",
+    "note": "Top 5 misclassified articles; driving words are those in the article with the highest log-ratio toward the wrong predicted class.",
+    "examples": [
+      {
+        "id": "0Ihlc0A18hTrzkoR",
+        "source": "Breitbart News",
+        "topic": "labor",
+        "true_label": "R",
+        "predicted": "D",
+        "title": "Weekly Jobless Claims Fall to 2.1 Million",
+        "driving_words_toward_wrong_label": [
+          "jersey",
+          "economists",
+          "layoffs",
+          "lag",
+          "27"
+        ]
+      },
+      {
+        "id": "0V65h0kM7wyOG0R8",
+        "source": "The Daily Caller",
+        "topic": "media_bias",
+        "true_label": "R",
+        "predicted": "D",
+        "title": "BuzzFeed Just Published Unverified Claims About Trump And Russian Hookers",
+        "driving_words_toward_wrong_label": [
+          "suite",
+          "russian",
+          "publishing",
+          "ie",
+          "ritz"
+        ]
+      },
+      {
+        "id": "0VON52bx5qyGmWNB",
+        "source": "Salon",
+        "topic": "politics",
+        "true_label": "D",
+        "predicted": "R",
+        "title": "Everbody hates Rick Santorum: How the former GOP heavyweight became a political irrelevancy",
+        "driving_words_toward_wrong_label": [
+          "conservative",
+          "reagan",
+          "democrats",
+          "h",
+          "rumors"
+        ]
+      },
+      {
+        "id": "0keOFBCvifAzZOOB",
+        "source": "CNN (Web News)",
+        "topic": "federal_budget",
+        "true_label": "D",
+        "predicted": "R",
+        "title": "Poll: Majority of Americans want to delay forced spending cuts",
+        "driving_words_toward_wrong_label": [
+          "trillion",
+          "closures",
+          "spending",
+          "nonpartisan",
+          "percentage"
+        ]
+      },
+      {
+        "id": "0yaFp9AQFss7Y5UD",
+        "source": "CNN (Web News)",
+        "topic": "justice_department",
+        "true_label": "D",
+        "predicted": "R",
+        "title": "Rand Paul claims revealing memo exists in IRS scandal",
+        "driving_words_toward_wrong_label": [
+          "conservative",
+          "hillary",
+          "kentucky",
+          "targeted",
+          "criticizing"
+        ]
+      }
+    ]
+  },
+  "figures": {
+    "comparison": "results/figures/exp3_comparison.png",
+    "confusion_matrix": "results/figures/exp3_confusion_matrix.png",
+    "accuracy_by_source": "results/figures/exp3_accuracy_by_source.png",
+    "accuracy_by_topic": "results/figures/exp3_accuracy_by_topic.png"
+  }
+}
