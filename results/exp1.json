@@ -1,0 +1,390 @@
+{
+  "description": "Paper Experiment 1 on held-out tweets, random vs member-grouped 80/20 split",
+  "data": {
+    "tweets": 121976,
+    "members": 450
+  },
+  "settings": {
+    "test_size": 0.2,
+    "seed": 42,
+    "min_df": 1,
+    "linear_svc_C": 0.06,
+    "linear_svc_C_note": "paper's value, chosen by the paper on its test tweets; not re-tuned here",
+    "features": {
+      "bernoulli_nb": "binary",
+      "multinomial_nb": "count",
+      "linear_svc": "count"
+    },
+    "paper_split": "random 90/10"
+  },
+  "splits": {
+    "random": {
+      "train_rows": 97580,
+      "test_rows": 24396,
+      "train_members": 449,
+      "test_members": 442,
+      "shared_members": 441,
+      "test_party_counts": {
+        "D": 15605,
+        "R": 8791
+      }
+    },
+    "grouped": {
+      "train_rows": 99273,
+      "test_rows": 22703,
+      "train_members": 360,
+      "test_members": 90,
+      "shared_members": 0,
+      "test_party_counts": {
+        "D": 13893,
+        "R": 8810
+      }
+    }
+  },
+  "majority_baseline": {
+    "random": {
+      "always_predict": "D",
+      "accuracy": 0.6396540416461715,
+      "macro_f1": 0.390115247118822,
+      "confusion_matrix": [
+        [
+          15605,
+          0
+        ],
+        [
+          8791,
+          0
+        ]
+      ]
+    },
+    "grouped": {
+      "always_predict": "D",
+      "accuracy": 0.61194555785579,
+      "macro_f1": 0.3796316537326484,
+      "confusion_matrix": [
+        [
+          13893,
+          0
+        ],
+        [
+          8810,
+          0
+        ]
+      ]
+    }
+  },
+  "scores": {
+    "random": {
+      "all_words": {
+        "bernoulli_nb": {
+          "accuracy": 0.8437858665354976,
+          "macro_f1": 0.8168958363217389,
+          "confusion_matrix": [
+            [
+              14967,
+              638
+            ],
+            [
+              3173,
+              5618
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.8475979668798164,
+          "macro_f1": 0.8245028992556407,
+          "confusion_matrix": [
+            [
+              14764,
+              841
+            ],
+            [
+              2877,
+              5914
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.8546892933267749,
+          "macro_f1": 0.8383085868869296,
+          "confusion_matrix": [
+            [
+              14308,
+              1297
+            ],
+            [
+              2248,
+              6543
+            ]
+          ]
+        }
+      },
+      "no_punct": {
+        "bernoulli_nb": {
+          "accuracy": 0.853418593212002,
+          "macro_f1": 0.8318124704168408,
+          "confusion_matrix": [
+            [
+              14782,
+              823
+            ],
+            [
+              2753,
+              6038
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.8535415641908509,
+          "macro_f1": 0.8332025769537315,
+          "confusion_matrix": [
+            [
+              14671,
+              934
+            ],
+            [
+              2639,
+              6152
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.8629693392359403,
+          "macro_f1": 0.8473977459595116,
+          "confusion_matrix": [
+            [
+              14423,
+              1182
+            ],
+            [
+              2161,
+              6630
+            ]
+          ]
+        }
+      },
+      "no_markers": {
+        "bernoulli_nb": {
+          "accuracy": 0.8037793080832923,
+          "macro_f1": 0.7870544484109829,
+          "confusion_matrix": [
+            [
+              13223,
+              2382
+            ],
+            [
+              2405,
+              6386
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.8132480734546647,
+          "macro_f1": 0.791764508041338,
+          "confusion_matrix": [
+            [
+              13838,
+              1767
+            ],
+            [
+              2789,
+              6002
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.8261600262338088,
+          "macro_f1": 0.8051023860875077,
+          "confusion_matrix": [
+            [
+              14087,
+              1518
+            ],
+            [
+              2723,
+              6068
+            ]
+          ]
+        }
+      }
+    },
+    "grouped": {
+      "all_words": {
+        "bernoulli_nb": {
+          "accuracy": 0.7759767431616967,
+          "macro_f1": 0.7391841884901145,
+          "confusion_matrix": [
+            [
+              13072,
+              821
+            ],
+            [
+              4265,
+              4545
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.7855789983702595,
+          "macro_f1": 0.7560476918884724,
+          "confusion_matrix": [
+            [
+              12867,
+              1026
+            ],
+            [
+              3842,
+              4968
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.8106858124476941,
+          "macro_f1": 0.793479966745992,
+          "confusion_matrix": [
+            [
+              12479,
+              1414
+            ],
+            [
+              2884,
+              5926
+            ]
+          ]
+        }
+      },
+      "no_punct": {
+        "bernoulli_nb": {
+          "accuracy": 0.7862837510461173,
+          "macro_f1": 0.7568834101754656,
+          "confusion_matrix": [
+            [
+              12873,
+              1020
+            ],
+            [
+              3832,
+              4978
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.7891908558340307,
+          "macro_f1": 0.7627351125825892,
+          "confusion_matrix": [
+            [
+              12749,
+              1144
+            ],
+            [
+              3642,
+              5168
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.812183411883892,
+          "macro_f1": 0.7947129421432699,
+          "confusion_matrix": [
+            [
+              12531,
+              1362
+            ],
+            [
+              2902,
+              5908
+            ]
+          ]
+        }
+      },
+      "no_markers": {
+        "bernoulli_nb": {
+          "accuracy": 0.783112364004757,
+          "macro_f1": 0.7666095119796441,
+          "confusion_matrix": [
+            [
+              11908,
+              1985
+            ],
+            [
+              2939,
+              5871
+            ]
+          ]
+        },
+        "multinomial_nb": {
+          "accuracy": 0.77690173104876,
+          "macro_f1": 0.756292932937271,
+          "confusion_matrix": [
+            [
+              12120,
+              1773
+            ],
+            [
+              3292,
+              5518
+            ]
+          ]
+        },
+        "linear_svc": {
+          "accuracy": 0.791613443157292,
+          "macro_f1": 0.7720692157097154,
+          "confusion_matrix": [
+            [
+              12310,
+              1583
+            ],
+            [
+              3148,
+              5662
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "random_minus_grouped_accuracy": {
+    "points": {
+      "all_words": {
+        "bernoulli_nb": 6.7809123373800855,
+        "multinomial_nb": 6.20189685095569,
+        "linear_svc": 4.400348087908079
+      },
+      "no_punct": {
+        "bernoulli_nb": 6.713484216588473,
+        "multinomial_nb": 6.435070835682022,
+        "linear_svc": 5.078592735204834
+      },
+      "no_markers": {
+        "bernoulli_nb": 2.066694407853531,
+        "multinomial_nb": 3.634634240590462,
+        "linear_svc": 3.4546583076516812
+      }
+    },
+    "mean_points": 4.9740324466460955,
+    "min_points": 2.066694407853531,
+    "max_points": 6.7809123373800855
+  },
+  "paper_comparison": [
+    {
+      "variant": "all_words",
+      "paper_bernoulli_nb_random_90_10": 0.8596,
+      "ours_bernoulli_nb_random_80_20": 0.8437858665354976,
+      "ours_bernoulli_nb_grouped_80_20": 0.7759767431616967
+    },
+    {
+      "variant": "no_punct",
+      "paper_bernoulli_nb_random_90_10": 0.8674,
+      "ours_bernoulli_nb_random_80_20": 0.853418593212002,
+      "ours_bernoulli_nb_grouped_80_20": 0.7862837510461173
+    },
+    {
+      "variant": "no_markers",
+      "paper_bernoulli_nb_random_90_10": 0.8206,
+      "ours_bernoulli_nb_random_80_20": 0.8037793080832923,
+      "ours_bernoulli_nb_grouped_80_20": 0.783112364004757
+    }
+  ],
+  "summary": "Across 3 models and 3 vocabulary variants, the random split gives 5.0 more accuracy points on average than the grouped split (range 2.1 to 6.8).",
+  "figure": "results/figures/exp1_tweet_test.png"
+}
