@@ -246,6 +246,12 @@ def verdict(tweet: dict, articles: dict) -> str:
         f"Articles: macro F1 {ext_a['macro_f1']:.3f} (accuracy {ext_a['accuracy']:.3f}), {word} the "
         f"paper's count LinearSVC on the same articles ({ref['macro_f1']:.3f}, {delta:+.1f} points)."
     )
+    base = articles["article_majority_baseline"]
+    side = "above" if ext_a["accuracy"] > base["accuracy"] else "not above"
+    parts.append(
+        f"Its article accuracy is {side} always predicting {base['always_predict']} "
+        f"({base['accuracy']:.3f}, the article test majority)."
+    )
     return " ".join(parts)
 
 
@@ -318,7 +324,11 @@ def main() -> dict:
     article_result = {
         "ext1": ext1_articles,
         "paper_linear_svc_counts": paper_svc_on_articles(tweets, articles),
+        # Always predict the training majority (D, from the tweets) ...
         "majority_baseline": majority_baseline(tweets["party"], articles["party"]),
+        # ... and always predict the article test majority (R: 599 right vs 402 left). This one is
+        # read off the test labels, so it is only a reference line, never used for any choice.
+        "article_majority_baseline": majority_baseline(articles["party"], articles["party"]),
         "exp3": exp3_reference(),
     }
     print(f"Articles: accuracy {ext1_articles['accuracy']:.4f}, macro F1 {ext1_articles['macro_f1']:.4f}")
@@ -329,6 +339,7 @@ def main() -> dict:
     tweet_rows += [("TF-IDF LR\nunigrams", unigram_tweet), ("Ext 1: TF-IDF LR\nuni + bigrams", ext1_tweet)]
     article_rows = [
         ("Always D", article_result["majority_baseline"]),
+        ("Always R\n(article majority)", article_result["article_majority_baseline"]),
         ("LinearSVC (C=0.06)\ncounts", article_result["paper_linear_svc_counts"]),
         ("Ext 1: TF-IDF LR\nuni + bigrams", ext1_articles),
     ]
