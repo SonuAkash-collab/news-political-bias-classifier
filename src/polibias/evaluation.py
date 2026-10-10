@@ -141,8 +141,14 @@ def write_results(result: dict, path: Path) -> None:
 
 
 def relative_path(path: Path) -> str:
-    """Path relative to the repository root with forward slashes, for storing in results."""
-    return Path(path).resolve().relative_to(config.ROOT).as_posix()
+    """Path relative to the repository root with forward slashes, for storing in results.
+
+    Paths outside the repository (possible with POLIBIAS_OUTPUT_DIR) are returned in full.
+    """
+    path = Path(path).resolve()
+    if not path.is_relative_to(config.ROOT):
+        return path.as_posix()
+    return path.relative_to(config.ROOT).as_posix()
 
 
 # Plotting

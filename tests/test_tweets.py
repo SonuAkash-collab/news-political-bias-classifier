@@ -82,3 +82,20 @@ def test_build_filters_and_columns(tmp_path):
     assert len(df) == 5
     assert stats["kept_members"] == 2
     assert set(df["party"]) == {"D", "R"}
+
+
+def test_sample_members_keeps_whole_members_of_both_parties():
+    from polibias.data.tweets import sample_members
+
+    members = [f"M{i:02d}" for i in range(60)]
+    frame = pd.DataFrame(
+        {
+            "text": [f"tweet {i}" for i in range(180)],
+            "member_id": [m for m in members for _ in range(3)],
+            "party": [("D" if i < 40 else "R") for i in range(60) for _ in range(3)],
+        }
+    )
+    sample = sample_members(frame, 0.25)
+    counts = sample.groupby("member_id").size()
+    assert (counts == 3).all()  # every kept member keeps all of their tweets
+    assert sample.drop_duplicates("member_id")["party"].value_counts().to_dict() == {"D": 10, "R": 10}

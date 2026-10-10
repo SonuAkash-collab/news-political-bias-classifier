@@ -119,7 +119,23 @@ def load_processed(path: Path = config.TWEETS_CSV) -> pd.DataFrame:
         )
     df = pd.read_csv(path, dtype={"text": str, "member_id": str, "party": str})
     df = df.dropna(subset=["text", "member_id", "party"])
-    return df[df["party"].isin(PARTIES)].reset_index(drop=True)
+    df = df[df["party"].isin(PARTIES)].reset_index(drop=True)
+    if config.QUICK:
+        df = sample_members(df, config.SAMPLE_FRACTION)
+    return df
+
+
+def sample_members(df: pd.DataFrame, fraction: float, seed: int = config.SEED) -> pd.DataFrame:
+    """Keep all tweets of a random fraction of the members of each party (for quick runs).
+
+    Sampling whole members keeps grouped splits meaningful. At least 10 members per party are kept.
+    """
+    members = df.drop_duplicates("member_id")[["member_id", "party"]]
+    kept = []
+    for _, group in members.groupby("party"):
+        n = min(len(group), max(10, round(fraction * len(group))))
+        kept.extend(group["member_id"].sample(n=n, random_state=seed))
+    return df[df["member_id"].isin(kept)].reset_index(drop=True)
 
 
 def print_summary(stats: dict) -> None:
