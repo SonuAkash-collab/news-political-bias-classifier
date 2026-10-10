@@ -247,22 +247,33 @@ def _save_comparison_bar(scores: dict[str, dict], output: Path) -> None:
         capsize=3,
         error_kw={"ecolor": config.MUTED, "elinewidth": 1.2},
     )
-    ax.bar(x + width / 2, macro_f1, width, label="Macro F1", color=config.GOLD_DARK)
     majority_acc = scores[names[0]]["majority_baseline_accuracy"]
+    majority_label = scores[names[0]].get("majority_label", "R")
     ax.axhline(
         majority_acc,
         color=config.MUTED,
         linestyle="--",
         linewidth=1.3,
-        label=f"Always D baseline ({majority_acc:.2f})",
+        label=f"Always {majority_label} baseline ({majority_acc:.1%})",
     )
+    # Always-D second reference line if baseline is R
+    if majority_label == "R":
+        always_d_acc = 1.0 - majority_acc
+        ax.axhline(
+            always_d_acc,
+            color=config.MUTED,
+            linestyle=":",
+            linewidth=1.1,
+            alpha=0.7,
+            label=f"Always D reference ({always_d_acc:.1%})",
+        )
     ax.set_ylabel("Score")
     ax.set_ylim(0, 1)
     ax.set_xticks(x, labels, fontsize=9)
     ax.set_title("Experiment 3: tweet-trained models on article test set (95 % CI on accuracy)")
     ax.grid(axis="y", color=config.MUTED, alpha=0.2)
     ax.set_axisbelow(True)
-    ax.legend(frameon=False, ncols=3, loc="upper right")
+    ax.legend(frameon=False, ncols=2, loc="upper right")
     for spine in ("top", "right"):
         ax.spines[spine].set_visible(False)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -364,7 +375,10 @@ def run_exp3(
     svc_paper = _svc_pipeline(C_PAPER)
     svc_tuned = _svc_pipeline(C_TUNED)
     svc_balanced = _svc_pipeline(C_TUNED, class_weight="balanced")
-    majority = DummyClassifier(strategy="constant", constant="D")
+
+    # The article test set is majority-R (402 D vs 599 R = 59.8% R)
+    article_majority_label = "R" if article_party_counts["R"] >= article_party_counts["D"] else "D"
+    majority = DummyClassifier(strategy="constant", constant=article_majority_label)
 
     svc_paper.fit(train_texts, train_y)
     svc_tuned.fit(train_texts, train_y)
@@ -406,6 +420,7 @@ def run_exp3(
             "accuracy": acc,
             "macro_f1": mf1,
             "accuracy_ci": list(ci),
+            "majority_label": article_majority_label,
             "majority_baseline_accuracy": baseline_acc,
             "majority_baseline_macro_f1": baseline_f1,
             "accuracy_delta_vs_baseline": acc - baseline_acc,
@@ -518,7 +533,14 @@ def run_exp3(
             "split_type": "media-based",
             "n_rows": n_test,
             "party_counts": article_party_counts,
-            "note": "Center articles excluded; left=D, right=R.",
+            "majority_label": article_majority_label,
+            "majority_accuracy": baseline_acc,
+            "note": (
+                f"Center articles excluded; left=D (402, 40.2%), right=R (599, 59.8%). "
+                f"Majority baseline is always-{article_majority_label} ({baseline_acc:.1%}). "
+                "Tweet-trained models predict D only 26-49% of the time, so they lean R on articles "
+                "despite 64.1% D training tweets."
+            ),
         },
         "paper_results": {
             "n_articles": 100,
