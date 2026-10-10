@@ -26,3 +26,8 @@ Thumbs.db
 # Streamlit
 .streamlit/secrets.toml
 .pytest-tmp/
+
+# files
+
+CLAUDE_CODE_PROMPTS.md
+PROJECT_CONTEXT.md

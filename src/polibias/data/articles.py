@@ -312,3 +312,20 @@ def process_articles(
     print_article_summary(frame, split_type=split_type)
     print(f"Saved processed articles to {output_path}")
     return frame
+
+
+def load_processed(path: Path | str = DEFAULT_OUTPUT) -> pd.DataFrame:
+    """Load data/processed/articles.csv (or another path)."""
+    p = Path(path).expanduser().resolve()
+    if not p.exists():
+        raise FileNotFoundError(
+            f"Missing {p}. Run scripts/download_articles.py first."
+        )
+    df = pd.read_csv(p, dtype=str, keep_default_na=False)
+    if config.QUICK:
+        parts = []
+        for _, group in df.groupby(["split", "bias_text"]):
+            n = min(len(group), max(5, round(config.SAMPLE_FRACTION * len(group))))
+            parts.append(group.sample(n=n, random_state=config.SEED))
+        df = pd.concat(parts, ignore_index=True) if parts else df
+    return df

@@ -1,0 +1,214 @@
+{
+  "description": "Extension 2: Sentence-chunk voting for news articles. Each article is split into tweet-sized chunks, scored with tweet-trained models, and probabilities averaged. Chunk size tuned on validation split only, then evaluated on test split.",
+  "validation_tuning": {
+    "candidate_chunk_sizes": [
+      15,
+      30,
+      50,
+      100
+    ],
+    "chosen_chunk_size": 50,
+    "mean_validation_macro_f1_per_size": {
+      "15": 0.37746843343661396,
+      "30": 0.390342589940195,
+      "50": 0.3943463001795151,
+      "100": 0.38606458320775794
+    },
+    "details": {
+      "bernoulli_nb": {
+        "15": {
+          "accuracy": 0.11680092059838895,
+          "macro_f1": 0.11658771852850164
+        },
+        "30": {
+          "accuracy": 0.286536248561565,
+          "macro_f1": 0.2552907694370381
+        },
+        "50": {
+          "accuracy": 0.4004602991944764,
+          "macro_f1": 0.32705947752054126
+        },
+        "100": {
+          "accuracy": 0.5155350978135789,
+          "macro_f1": 0.39176920250641317
+        }
+      },
+      "multinomial_nb": {
+        "15": {
+          "accuracy": 0.7249712313003452,
+          "macro_f1": 0.4728119606051376
+        },
+        "30": {
+          "accuracy": 0.5529344073647872,
+          "macro_f1": 0.4057319534821703
+        },
+        "50": {
+          "accuracy": 0.4723820483314154,
+          "macro_f1": 0.36704947610429545
+        },
+        "100": {
+          "accuracy": 0.3947065592635213,
+          "macro_f1": 0.32624935144568656
+        }
+      },
+      "linear_svc": {
+        "15": {
+          "accuracy": 0.92692750287687,
+          "macro_f1": 0.5430056211762027
+        },
+        "30": {
+          "accuracy": 0.8135788262370541,
+          "macro_f1": 0.5100050469013766
+        },
+        "50": {
+          "accuracy": 0.7399309551208285,
+          "macro_f1": 0.4889299469137087
+        },
+        "100": {
+          "accuracy": 0.622554660529344,
+          "macro_f1": 0.4401751956711742
+        }
+      }
+    }
+  },
+  "test_results": {
+    "bernoulli_nb": {
+      "whole_article": {
+        "accuracy": 0.6063936063936064,
+        "macro_f1": 0.5901974231088944,
+        "accuracy_ci": [
+          0.5757765556350765,
+          0.6361971524598113
+        ],
+        "accuracy_delta_vs_majority": 0.007992007992007943
+      },
+      "chunk_voting": {
+        "chunk_size": 50,
+        "accuracy": 0.6083916083916084,
+        "macro_f1": 0.5711450354981988,
+        "accuracy_ci": [
+          0.5777939811517641,
+          0.638160453855704
+        ],
+        "accuracy_delta_vs_whole": 0.0019980019980020414,
+        "accuracy_delta_vs_majority": 0.009990009990009985,
+        "macro_f1_delta": -0.01905238761069561
+      },
+      "majority_baseline": {
+        "label": "R",
+        "accuracy": 0.5984015984015985
+      },
+      "test_by_chunk_size": {
+        "15": {
+          "accuracy": 0.6203796203796204,
+          "macro_f1": 0.4851603612187886
+        },
+        "30": {
+          "accuracy": 0.6133866133866134,
+          "macro_f1": 0.5514365743147714
+        },
+        "50": {
+          "accuracy": 0.6083916083916084,
+          "macro_f1": 0.5711450354981988
+        },
+        "100": {
+          "accuracy": 0.6053946053946054,
+          "macro_f1": 0.590646453414998
+        }
+      }
+    },
+    "multinomial_nb": {
+      "whole_article": {
+        "accuracy": 0.6053946053946054,
+        "macro_f1": 0.5539321368094124,
+        "accuracy_ci": [
+          0.5747680406000419,
+          0.635215304038556
+        ],
+        "accuracy_delta_vs_majority": 0.006993006993006978
+      },
+      "chunk_voting": {
+        "chunk_size": 50,
+        "accuracy": 0.6003996003996004,
+        "macro_f1": 0.5832604767733287,
+        "accuracy_ci": [
+          0.5697274357463634,
+          0.6303040916107842
+        ],
+        "accuracy_delta_vs_whole": -0.004995004995005048,
+        "accuracy_delta_vs_majority": 0.0019980019980019303,
+        "macro_f1_delta": 0.02932833996391626
+      },
+      "majority_baseline": {
+        "label": "R",
+        "accuracy": 0.5984015984015985
+      },
+      "test_by_chunk_size": {
+        "15": {
+          "accuracy": 0.5524475524475524,
+          "macro_f1": 0.5482051034060319
+        },
+        "30": {
+          "accuracy": 0.5844155844155844,
+          "macro_f1": 0.5780445691031866
+        },
+        "50": {
+          "accuracy": 0.6003996003996004,
+          "macro_f1": 0.5832604767733287
+        },
+        "100": {
+          "accuracy": 0.6033966033966034,
+          "macro_f1": 0.5642581532257092
+        }
+      }
+    },
+    "linear_svc": {
+      "whole_article": {
+        "accuracy": 0.5844155844155844,
+        "macro_f1": 0.5744743468166509,
+        "accuracy_ci": [
+          0.5536193695211532,
+          0.6145663425353539
+        ],
+        "accuracy_delta_vs_majority": -0.013986013986014068
+      },
+      "chunk_voting": {
+        "chunk_size": 50,
+        "accuracy": 0.5184815184815185,
+        "macro_f1": 0.5127035106855735,
+        "accuracy_ci": [
+          0.4875163368174757,
+          0.5493053871238898
+        ],
+        "accuracy_delta_vs_whole": -0.06593406593406592,
+        "accuracy_delta_vs_majority": -0.07992007992007999,
+        "macro_f1_delta": -0.06177083613107737
+      },
+      "majority_baseline": {
+        "label": "R",
+        "accuracy": 0.5984015984015985
+      },
+      "test_by_chunk_size": {
+        "15": {
+          "accuracy": 0.44255744255744256,
+          "macro_f1": 0.3693740685543964
+        },
+        "30": {
+          "accuracy": 0.48451548451548454,
+          "macro_f1": 0.4628577371048253
+        },
+        "50": {
+          "accuracy": 0.5184815184815185,
+          "macro_f1": 0.5127035106855735
+        },
+        "100": {
+          "accuracy": 0.5724275724275725,
+          "macro_f1": 0.571904202338985
+        }
+      }
+    }
+  },
+  "figures": {
+    "chunk_voting_comparison": "results/figures/ext2_chunk_voting.png"
+  }
+}

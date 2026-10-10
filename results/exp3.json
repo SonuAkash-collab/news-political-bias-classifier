@@ -16,7 +16,9 @@
       "D": 402,
       "R": 599
     },
-    "note": "Center articles excluded; left=D, right=R."
+    "majority_label": "R",
+    "majority_accuracy": 0.5984015984015985,
+    "note": "Center articles excluded; left=D (402, 40.2%), right=R (599, 59.8%). Majority baseline is always-R (59.8%). Tweet-trained models predict D only 26-49% of the time, so they lean R on articles despite 64.1% D training tweets."
   },
   "paper_results": {
     "n_articles": 100,
@@ -49,17 +51,18 @@
   "c_tuned": 0.1,
   "scores": {
     "majority_baseline": {
-      "accuracy": 0.4015984015984016,
-      "macro_f1": 0.28652886671418387,
+      "accuracy": 0.5984015984015985,
+      "macro_f1": 0.374375,
       "accuracy_ci": [
-        0.37166130971180183,
-        0.4322878898436305
+        0.5677121101563695,
+        0.6283386902881981
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
       "accuracy_delta_vs_baseline": 0.0,
       "macro_f1_delta_vs_baseline": 0.0,
-      "fraction_predicted_D": 1.0
+      "fraction_predicted_D": 0.0
     },
     "bernoulli_nb": {
       "accuracy": 0.6063936063936064,
@@ -68,10 +71,11 @@
         0.5757765556350765,
         0.6361971524598113
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
-      "accuracy_delta_vs_baseline": 0.2047952047952048,
-      "macro_f1_delta_vs_baseline": 0.3036685563947106,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
+      "accuracy_delta_vs_baseline": 0.007992007992007943,
+      "macro_f1_delta_vs_baseline": 0.21582242310889443,
       "fraction_predicted_D": 0.3996003996003996
     },
     "multinomial_nb": {
@@ -81,10 +85,11 @@
         0.5747680406000419,
         0.635215304038556
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
-      "accuracy_delta_vs_baseline": 0.20379620379620383,
-      "macro_f1_delta_vs_baseline": 0.2674032700952286,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
+      "accuracy_delta_vs_baseline": 0.006993006993006978,
+      "macro_f1_delta_vs_baseline": 0.17955713680941243,
       "fraction_predicted_D": 0.25874125874125875
     },
     "linear_svc_paper_c0.06": {
@@ -94,10 +99,11 @@
         0.5465824590484133,
         0.6076707088140637
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
-      "accuracy_delta_vs_baseline": 0.1758241758241758,
-      "macro_f1_delta_vs_baseline": 0.2829466316310203,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
+      "accuracy_delta_vs_baseline": -0.020979020979021046,
+      "macro_f1_delta_vs_baseline": 0.19510049834520415,
       "fraction_predicted_D": 0.46253746253746253
     },
     "linear_svc_tuned_c0.1": {
@@ -107,10 +113,11 @@
         0.5536193695211532,
         0.6145663425353539
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
-      "accuracy_delta_vs_baseline": 0.1828171828171828,
-      "macro_f1_delta_vs_baseline": 0.287945480102467,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
+      "accuracy_delta_vs_baseline": -0.013986013986014068,
+      "macro_f1_delta_vs_baseline": 0.20009934681665087,
       "fraction_predicted_D": 0.44555444555444557
     },
     "linear_svc_balanced_c0.1": {
@@ -120,10 +127,11 @@
         0.5495975104361767,
         0.6106267477951705
       ],
-      "majority_baseline_accuracy": 0.4015984015984016,
-      "majority_baseline_macro_f1": 0.28652886671418387,
-      "accuracy_delta_vs_baseline": 0.17882117882117882,
-      "macro_f1_delta_vs_baseline": 0.28922271556429713,
+      "majority_label": "R",
+      "majority_baseline_accuracy": 0.5984015984015985,
+      "majority_baseline_macro_f1": 0.374375,
+      "accuracy_delta_vs_baseline": -0.01798201798201804,
+      "macro_f1_delta_vs_baseline": 0.201376582278481,
       "fraction_predicted_D": 0.4935064935064935
     }
   },
