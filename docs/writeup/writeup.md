@@ -69,6 +69,43 @@ article error comes from training on tweets.
 
 ## Implementation
 
+The system is implemented as a modular Python package under src/polibias with a reproducible execution pipeline. The package relies on NumPy and scikit-learn for numeric and model routines, with fixed random seed 42 throughout.
+
+Data loading modules process 121,976 Congress tweets and 37,554 AllSides news articles into standardized CSV tables. Naive Bayes classifiers (Bernoulli and Multinomial) are written directly from scratch using NumPy log-space operations with Laplace add-one smoothing, verified against scikit-learn for numeric equivalence. Linear models (LinearSVC, Logistic Regression, Complement Naive Bayes) use scikit-learn.
+
+Hyperparameter tuning uses GroupKFold cross-validation (5 folds, grouped on member Bioguide ID) exclusively within the training partition, selecting on macro F1. For inference, models and feature vectorizers are saved as compressed joblib bundles under models/. An end-to-end runner in scripts/run_all.py coordinates data preparation, model training, metric evaluation, and output generation into results/results.json and results/figures/. Interactive inspection is provided by a Streamlit web interface in app/streamlit_app.py and a terminal fallback in app/cli.py.
+
 ## Results
 
+Table 1 summarizes classification performance across held-out tweets and the 1,001 binary news articles under the media-based split (402 Left, 599 Right). The majority baseline always predicts the most frequent class: Democratic on tweets (61.2% accuracy, 0.380 macro F1) and Republican on articles (59.8% accuracy, 0.374 macro F1).
+
+| Task and evaluation setting | Model | Accuracy | Macro F1 | Paper comparison |
+|---|---|---|---|---|
+| Tweets, random split (80/20) | Bernoulli NB (no_punct) | 85.3% | 0.832 | 86.7% (90/10 split) |
+| Tweets, random split (80/20) | Multinomial NB (no_punct) | 85.4% | 0.833 | Not reported |
+| Tweets, random split (80/20) | LinearSVC (C=0.06) | 86.3% | 0.849 | Approx 87% |
+| Tweets, grouped split (held-out members) | Bernoulli NB (no_punct) | 78.6% | 0.757 | −6.7 pp vs random |
+| Tweets, grouped split (held-out members) | Multinomial NB (no_punct) | 78.9% | 0.763 | −6.4 pp vs random |
+| Tweets, grouped split (held-out members) | LinearSVC (C=0.06) | 81.2% | 0.795 | −5.1 pp vs random |
+| Tweets, grouped split (Extension 1) | TF-IDF + Logistic Regression | 83.3% | 0.824 | +2.1 pp over SVC |
+| Articles, cross-domain (Exp 3) | Majority baseline (always R) | 59.8% | 0.374 | Baseline |
+| Articles, cross-domain (Exp 3) | Bernoulli NB | 60.6% | 0.590 | 58.0% (100 poll arts) |
+| Articles, cross-domain (Exp 3) | Multinomial NB | 60.5% | 0.554 | 55.0% (100 poll arts) |
+| Articles, cross-domain (Exp 3) | LinearSVC (tuned C=0.10) | 58.4% | 0.574 | 63.0% (100 poll arts) |
+| Articles, chunk voting (Extension 2) | Bernoulli NB (50-word chunks) | 60.8% | 0.571 | +0.2 pp over whole |
+| Articles, chunk voting (Extension 2) | LinearSVC (50-word chunks) | 51.8% | 0.513 | −6.6 pp over whole |
+| Articles, in-domain (Extension 3) | LinearSVC (tuned C=0.10) | 66.5% | 0.658 | +6.7 pp over baseline |
+
+Holding out whole members in the grouped split reduces tweet test accuracy by 5.0 percentage points on average across all models and vocabulary variants. Models on random splits rely heavily on individual author vocabulary rather than party-wide ideology.
+
+On news articles, tweet-trained models barely compete with the 59.8% majority baseline. Bernoulli NB scores 60.6% and Multinomial NB scores 60.5%, while LinearSVC scores 58.4% (below baseline). In Extension 2, sentence-chunk voting with 50-word chunks does not fix this domain gap: chunked Bernoulli NB achieves 60.8%, while chunked LinearSVC drops to 51.8% because summing noisy margin scores across many non-partisan article sentences accumulates errors.
+
+In contrast, Extension 3 trains directly on AllSides articles under the media-based split. LinearSVC reaches 66.5% accuracy and 0.658 macro F1 (+6.7 percentage points over majority baseline). This demonstrates that the bottleneck in cross-domain political classification is vocabulary and stylistic distribution shift between social media posts and journalistic prose.
+
 ## Conclusions
+
+Our reproduction and extension yield three conclusions:
+
+1. Random train-test splits on social media text severely overestimate generalization. Grouping by author drops accuracy by 5.0 to 6.8 percentage points because models cannot exploit member-specific names, handles, or local districts.
+2. Cross-domain transfer from Congress tweets to news articles fails. Tweet-trained models achieve 58.4% to 60.6% accuracy on 1,001 AllSides articles, indistinguishable from the 59.8% majority baseline. Sentence-chunk aggregation does not resolve this stylistic mismatch.
+3. In-domain article supervision with outlet-disjoint splits achieves 66.5% accuracy (+6.7 percentage points over baseline). Future improvements should focus on domain-adaptive pretraining and entity-masked representations rather than pure surface n-gram transfers.
