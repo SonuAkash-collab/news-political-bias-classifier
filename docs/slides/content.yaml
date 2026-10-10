@@ -1,0 +1,204 @@
+# Slide content for docs/slides/deck.pptx. Build with: python docs/slides/build_deck.py
+# One entry per slide, in order. Layouts and their fields are listed in build_deck.py.
+# Rules: one idea per slide, at most four short bullets, real numbers only (from results/*.json),
+# speaker notes on every slide in plain words.
+#
+# Slides 1 to 9: Person A (Sonu Akash Soundararajan).
+# Slide 10 onward: Person B (Rahul Saran Sharma), see the marked block at the end.
+
+slides:
+
+  # ---------------- Person A ----------------
+
+  - layout: cover
+    title: ["Political bias", "in news articles"]
+    subtitle: "Can politicians' tweets teach a computer to spot left and right news?"
+    people:
+      - {name: "Sonu Akash Soundararajan", srn: "PES1UG24AM908"}
+      - {name: "Rahul Saran Sharma", srn: "PES1UG24AM218"}
+    course: "UE24CS352A Machine Learning  |  Section D  |  Team 16"
+    notes: >
+      Good morning. We are Team 16. I am Sonu Akash and this is Rahul Saran.
+      Our project asks a simple question: if a computer reads thousands of tweets written by
+      American politicians, can it learn to tell whether a news article leans left or right?
+      I will cover the problem, the data, how we tested, and our first results. Rahul will
+      then cover the news articles and our other improvements.
+
+  - layout: bullets
+    section: Introduction
+    title: The problem
+    bullets:
+      - "News outlets lean left or right, and readers often cannot tell"
+      - "Labelling articles by hand is slow, so labelled news is rare"
+      - "Politicians' tweets come with a free label: the author's party"
+      - "So we learn party language from tweets, then read the news"
+    panel:
+      heading: Our question
+      text: "Can a model trained on tweets tell if an article leans Democratic or Republican?"
+    notes: >
+      Why does this matter? Most news has some political lean, and readers often do not notice it.
+      A tool that flags the lean would help people read more critically. The hard part is labels:
+      someone has to read each article and decide. Tweets by members of Congress solve that,
+      because we already know each author's party. So the idea is to learn which words sound
+      Democratic or Republican from tweets, and then use that on news articles.
+
+  - layout: numbers_side
+    section: Background
+    title: The reference paper
+    numbers:
+      - {value: "86.7%", label: "Paper: Naive Bayes on held-out tweets"}
+      - {value: "63%", label: "Paper: SVM on 100 news articles"}
+    heading: Our goals
+    bullets:
+      - "Rebuild their three models: two Naive Bayes and a linear SVM"
+      - "Test fairly: each politician's tweets stay on one side of the split"
+      - "Choose settings without looking at the test set"
+      - "Test on 1,001 public news articles, not 100 private ones"
+    caption: "Crain and Erhan, Categorizing News Articles on Political Bias, Stanford CS229, 2021"
+    notes: >
+      We follow a Stanford student project by Crain and Erhan from 2021. They trained simple
+      models on about 104 thousand tweets and reported 86.7 percent accuracy on tweets, but only
+      63 percent on 100 news articles. We found three issues. Their test tweets came from the same
+      people as the training tweets. They picked one setting by checking the test set. And their
+      100 articles were never released. Our goals are to rebuild their models, fix those three
+      issues, and measure honestly.
+
+  - layout: numbers_top
+    section: Data
+    title: The data
+    numbers:
+      - {value: "121,976", label: "tweets"}
+      - {value: "450", label: "House members"}
+      - {value: "64%", label: "of tweets are by Democrats"}
+      - {value: "1,001", label: "news articles to test on"}
+    bullets:
+      - "Tweets: public congresstweets archive, 3 January to 1 April 2021, same as the paper"
+      - "Each tweet is labelled with its author's party, D or R"
+      - "News: 402 left and 599 right AllSides articles (Baly et al., 2020)"
+      - "Since 64% of tweets are D, always guessing D already scores about 61 to 64%"
+    notes: >
+      Our tweets come from a public archive of every tweet by members of Congress. We used the
+      same three months as the paper and kept House members only: about 122 thousand tweets from
+      450 people. Each tweet gets its author's party as the answer. For news we used a public
+      dataset from AllSides, which rates articles as left, centre or right; we kept left and right,
+      1,001 test articles. One thing to remember: 64 percent of the tweets are from Democrats,
+      so a lazy model that always says Democrat already gets about 61 to 64 percent. Any real
+      model must beat that.
+
+  - layout: steps
+    section: Method
+    title: How it works
+    steps:
+      - {title: "Collect", text: "Download the tweets and match each author to a party"}
+      - {title: "Clean", text: "Make three versions: all words, no punctuation, no # or @"}
+      - {title: "Count", text: "Turn each tweet into word counts, or yes/no flags per word"}
+      - {title: "Learn and test", text: "Train Naive Bayes and an SVM, then score them on unseen data"}
+    notes: >
+      Here is the whole process in four steps. One, collect the tweets and attach the party.
+      Two, clean the text, in three versions like the paper: keep everything, remove punctuation,
+      or also remove hashtags and at-mentions. Three, turn each tweet into numbers: how often each
+      word appears, or simply whether it appears. Four, train the models. Naive Bayes, which we
+      wrote ourselves, counts how often each word appears for each party. The SVM draws the best
+      dividing line between the two parties. Then we score them on data they have never seen.
+
+  - layout: compare
+    section: Method
+    title: Testing fairly
+    cards:
+      - heading: "Random split (paper)"
+        value: "441 of 442"
+        label: "test members also appear in training"
+        text: "The model can memorise names, handles and pet phrases"
+        dark: false
+      - heading: "Grouped split (ours)"
+        value: "0"
+        label: "test members appear in training"
+        text: "Learn from 360 members, test on 90 new ones"
+        dark: true
+    bullets:
+      - "Settings chosen by 5-fold grouped cross-validation on training data only"
+    notes: >
+      This is the most important slide. The paper shuffled all tweets randomly into train and test.
+      That means the same politician is in both. In our random split, 441 of the 442 people in the
+      test set were also in training, so the model can simply recognise the person, for example
+      their name or their district hashtag, instead of learning politics. We split by person:
+      360 members for training, 90 completely new members for testing, with no overlap. We also
+      chose every setting using only the training data, by testing on held-out groups of people
+      inside it, never on the test set.
+
+  - layout: figure
+    section: Results
+    title: "Experiment 1: tweets"
+    figure: results/figures/exp1_tweet_test.png
+    text: below
+    numbers:
+      - {value: "5.0 points", label: "average boost from the random split"}
+    bullets:
+      - "Random split: 80 to 86%, close to the paper"
+      - "Grouped split: best is 81.2% (SVM)"
+      - "Every model beats always guessing D (61.2%)"
+    notes: >
+      Experiment 1 repeats the paper's tweet test. On the left, the random split: our models score
+      80 to 86 percent, close to the paper's numbers, so our rebuild works. On the right, the fair
+      split by person: everything drops, and the best model, the SVM, gets 81.2 percent. On average
+      the random split adds 5 accuracy points, up to 6.8 points. So part of the paper's score came
+      from recognising people. The good news: all models are still well above the 61 percent you
+      get by always guessing Democrat, so they do learn real political language.
+
+  - layout: figure
+    section: Results
+    title: "Experiment 2: telling words"
+    figure: results/figures/exp2_top_words.png
+    # Only the first panel (all words) and the last (no punctuation, # or @), so they stay readable
+    crops: [[0.0, 0.03, 0.35, 0.96], [0.6935, 0.03, 1.0, 0.96]]
+    bullets:
+      - "With # and @ kept, the top words are hashtags and account names"
+      - "Some belong to one person: #az01 was used by 1 member"
+      - "Without them, real topics appear: reproductive, inequity, unborn, amnesty"
+      - "Turquoise is Democratic, gold is Republican"
+    notes: >
+      Experiment 2 asks which words the model finds most Democratic or most Republican.
+      Turquoise bars are Democratic words, gold bars are Republican words. With all words kept,
+      the top of the list is hashtags and account names, like the American Rescue Plan hashtag or
+      at-Newsmax. Some are used by just one person: the az01 hashtag is one member's district.
+      That is the memorising problem from the last slide. When we remove hashtags and mentions,
+      real policy words appear: reproductive and inequity on the Democratic side, unborn, amnesty
+      and lockdowns on the Republican side.
+
+  - layout: figure
+    section: Extensions
+    title: "Extension 1: TF-IDF"
+    figure: results/figures/ext1_tfidf_lr.png
+    text: below
+    numbers:
+      - {value: "+2.9 points", label: "balanced score on new members (82.4 vs 79.5)"}
+    bullets:
+      - "Words every politician uses count less; word pairs are added"
+      - "New members: 83.3% accuracy, our best tweet model"
+      - "News: 59.2%, no better than always guessing R (59.8%)"
+    notes: >
+      Our first improvement. TF-IDF gives less weight to words that every politician uses, and we
+      also add pairs of words, so short phrases count. A logistic regression model then makes the
+      decision, and we tuned it on training data only. On new members it is our best tweet model:
+      83.3 percent accuracy, and 2.9 points better on a balanced score that treats both parties
+      equally. But to be honest, on news articles it gets 59.2 percent, which is no better than
+      always guessing Republican. Better on tweets does not mean better on news. Rahul will now
+      look at why.
+
+  # ---------------- Person B: Experiment 3 to the end ----------------
+  # Rahul: replace the marker slide below with your slides (Experiment 3, Extensions 2 and 3,
+  # demo, conclusions, thank-you). A thank-you slide looks like this:
+  #   - layout: thankyou
+  #     title: Thank you
+  #     text: "Questions?"
+  #     side_text: "Team 16"
+  #     notes: >
+  #       ...
+
+  - layout: marker
+    section: Person B
+    title: "Person B slides"
+    heading: "Placeholder for Person B"
+    text: "Experiment 3 (news articles), Extensions 2 and 3, demo, conclusions and the thank-you slide go here."
+    notes: >
+      Placeholder. Person B replaces this slide with Experiment 3 to the end of the deck.
