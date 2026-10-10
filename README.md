@@ -214,4 +214,98 @@ skips them until they exist.
 
 ## Demo
 
+The demo loads trained models from `models/` and lets you paste an article or pick one from the
+test set. It shows the predicted leaning (Left/Democratic or Right/Republican), a confidence
+score derived from the model's decision boundary, and the vocabulary features that most pushed
+the prediction in that direction.
+
+**Prerequisites:** run `python scripts/run_all.py` at least once so that all `.joblib` files in
+`models/` exist.
+
+### Streamlit web interface (preferred)
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+Open the URL printed by Streamlit (default: http://localhost:8501) in a browser. The sidebar
+lets you pick any of the six saved models and switch between free-text input and a dropdown of
+the 1,001 article test set. The recommended default is the in-domain LinearSVC (Extension 3,
+66.5% accuracy).
+
+### Command-line fallback
+
+Use this if the Streamlit server cannot start during the review session.
+
+```bash
+# Interactive mode — type text, press Enter twice to classify, type "quit" to exit.
+python app/cli.py
+
+# Single-shot mode.
+python app/cli.py --text "The president signed the energy bill into law today."
+
+# Choose a different model (default: ext3).
+python app/cli.py --model ext1 --text "Gun rights are fundamental to American freedom."
+```
+
+Available model keys: `ext3` (in-domain LinearSVC, best on articles), `ext1` (TF-IDF + LR),
+`linear` (LinearSVC tweet-trained), `logistic` (LR tweet-trained), `cnb` (Complement NB).
+
+The CLI prints an ASCII confidence bar and the driving vocabulary words:
+
+```
+====================================================================
+ Political Bias Classifier — command-line interface
+====================================================================
+ Model : LinearSVC in-domain articles (Ext 3)
+--------------------------------------------------------------------
+ Prediction  : Right (Republican)   (68.2% confidence)
+  Left  31.8% [############............................]
+  Right 68.2% [##########################..............]
+ Driving words: energy  oil  gas  pipeline  federal  regulation
+====================================================================
+```
+
 ## Results
+
+All numbers below are on the **media-based split** of 1,001 AllSides test articles (402 Left,
+599 Right). Majority baseline always predicts Right (the larger class) and scores 59.8%.
+
+### Tweet-trained models on news articles (Experiment 3)
+
+| Model | Accuracy | Macro F1 | vs. baseline |
+|---|---|---|---|
+| Majority baseline (always Right) | 59.8% | 0.374 | — |
+| Bernoulli NB | 60.6% | 0.590 | +0.8 pp |
+| Multinomial NB | 60.5% | 0.591 | +0.7 pp |
+| LinearSVC C=0.06 (paper's C) | 58.4% | 0.572 | −1.4 pp |
+| LinearSVC C=0.1 (tuned) | 59.2% | 0.577 | −0.6 pp |
+
+All tweet-trained models struggle on articles: the training domain (short, partisan social-media
+posts) differs substantially from journalistic prose.
+
+### Extensions
+
+| Extension | Accuracy | Macro F1 | vs. baseline |
+|---|---|---|---|
+| Ext 1: TF-IDF + LR — tweet-trained | 59.2% | 0.576 | −0.6 pp |
+| Ext 2: Chunk voting (50-word chunks, LinearSVC) | 59.2% | 0.577 | −0.6 pp |
+| Ext 3: LinearSVC — in-domain articles | **66.5%** | **0.658** | **+6.7 pp** |
+
+Extension 3 (in-domain training on AllSides articles with a media-based train/test split) gives
+the largest improvement and is the model used by the demo.
+
+### Tweet classifier on held-out congress members (model zoo)
+
+| Model | Accuracy | Macro F1 |
+|---|---|---|
+| Majority baseline (always Democratic) | 61.2% | 0.380 |
+| Complement NB | 80.1% | 0.791 |
+| LinearSVC | 80.9% | 0.792 |
+| LinearSVC balanced | 80.8% | 0.799 |
+| Logistic Regression | 80.9% | 0.793 |
+| Logistic Regression balanced | 80.8% | 0.798 |
+| Ext 1: TF-IDF + LR | 83.3% | 0.819 |
+
+The grouped split (each congressperson entirely in train or test) is 15–20 pp below the paper's
+random split, which lets the model memorise author style rather than party language.
