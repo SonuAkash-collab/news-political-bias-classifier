@@ -1,0 +1,460 @@
+{
+  "description": "Paper Experiment 2 (Table 1): top words per party by Bernoulli NB log ratio",
+  "data": {
+    "tweets": 121976,
+    "members": 450,
+    "trained_on": "all tweets"
+  },
+  "settings": {
+    "top_n": 10,
+    "min_df": 1,
+    "alpha": 1.0
+  },
+  "columns": {
+    "log_ratio": "natural log of p(word | party) / p(word | other party)",
+    "d_tweets": "D tweets containing the word",
+    "r_tweets": "R tweets containing the word",
+    "members": "different members who used the word"
+  },
+  "top_words": {
+    "all_words": {
+      "D": [
+        {
+          "word": "#americanrescueplan",
+          "log_ratio": 6.0869,
+          "d_tweets": 2352,
+          "r_tweets": 2,
+          "members": 204
+        },
+        {
+          "word": "#forthepeople",
+          "log_ratio": 5.6467,
+          "d_tweets": 504,
+          "r_tweets": 0,
+          "members": 146
+        },
+        {
+          "word": "#buildbackbetter",
+          "log_ratio": 4.9866,
+          "d_tweets": 260,
+          "r_tweets": 0,
+          "members": 97
+        },
+        {
+          "word": "#az01",
+          "log_ratio": 4.9595,
+          "d_tweets": 253,
+          "r_tweets": 0,
+          "members": 1
+        },
+        {
+          "word": "lgbtq+",
+          "log_ratio": 4.8471,
+          "d_tweets": 226,
+          "r_tweets": 0,
+          "members": 98
+        },
+        {
+          "word": "http://healthcare.gov",
+          "log_ratio": 4.7787,
+          "d_tweets": 211,
+          "r_tweets": 0,
+          "members": 100
+        },
+        {
+          "word": "#stopasianhate.",
+          "log_ratio": 4.6479,
+          "d_tweets": 185,
+          "r_tweets": 0,
+          "members": 104
+        },
+        {
+          "word": "#endgunviolence",
+          "log_ratio": 4.6425,
+          "d_tweets": 184,
+          "r_tweets": 0,
+          "members": 95
+        },
+        {
+          "word": "#justiceinpolicing",
+          "log_ratio": 4.5926,
+          "d_tweets": 175,
+          "r_tweets": 0,
+          "members": 89
+        },
+        {
+          "word": "#americanrescueplan,",
+          "log_ratio": 4.4558,
+          "d_tweets": 306,
+          "r_tweets": 1,
+          "members": 113
+        }
+      ],
+      "R": [
+        {
+          "word": "#utpol",
+          "log_ratio": 5.9439,
+          "d_tweets": 0,
+          "r_tweets": 213,
+          "members": 6
+        },
+        {
+          "word": "@newsmax",
+          "log_ratio": 5.9009,
+          "d_tweets": 0,
+          "r_tweets": 204,
+          "members": 56
+        },
+        {
+          "word": "#bidenbordercrisis",
+          "log_ratio": 5.6808,
+          "d_tweets": 1,
+          "r_tweets": 328,
+          "members": 88
+        },
+        {
+          "word": "@housecommerce",
+          "log_ratio": 5.6468,
+          "d_tweets": 0,
+          "r_tweets": 158,
+          "members": 25
+        },
+        {
+          "word": "#prolife",
+          "log_ratio": 5.4832,
+          "d_tweets": 0,
+          "r_tweets": 134,
+          "members": 67
+        },
+        {
+          "word": "#ccp",
+          "log_ratio": 5.4682,
+          "d_tweets": 0,
+          "r_tweets": 132,
+          "members": 39
+        },
+        {
+          "word": "@timburchett",
+          "log_ratio": 5.4493,
+          "d_tweets": 1,
+          "r_tweets": 260,
+          "members": 4
+        },
+        {
+          "word": "@dailycaller",
+          "log_ratio": 5.3654,
+          "d_tweets": 0,
+          "r_tweets": 119,
+          "members": 52
+        },
+        {
+          "word": "lockdowns",
+          "log_ratio": 5.2318,
+          "d_tweets": 0,
+          "r_tweets": 104,
+          "members": 52
+        },
+        {
+          "word": "#savehyde",
+          "log_ratio": 5.2223,
+          "d_tweets": 0,
+          "r_tweets": 103,
+          "members": 79
+        }
+      ]
+    },
+    "no_punct": {
+      "D": [
+        {
+          "word": "americanrescueplan",
+          "log_ratio": 5.5183,
+          "d_tweets": 3108,
+          "r_tweets": 6,
+          "members": 212
+        },
+        {
+          "word": "buildbackbetter",
+          "log_ratio": 5.4929,
+          "d_tweets": 432,
+          "r_tweets": 0,
+          "members": 123
+        },
+        {
+          "word": "az01",
+          "log_ratio": 5.1998,
+          "d_tweets": 322,
+          "r_tweets": 0,
+          "members": 2
+        },
+        {
+          "word": "endgunviolence",
+          "log_ratio": 5.1057,
+          "d_tweets": 293,
+          "r_tweets": 0,
+          "members": 115
+        },
+        {
+          "word": "forthepeople",
+          "log_ratio": 4.9841,
+          "d_tweets": 780,
+          "r_tweets": 2,
+          "members": 168
+        },
+        {
+          "word": "climatecrisis",
+          "log_ratio": 4.8293,
+          "d_tweets": 222,
+          "r_tweets": 0,
+          "members": 72
+        },
+        {
+          "word": "equalpayday",
+          "log_ratio": 4.69,
+          "d_tweets": 193,
+          "r_tweets": 0,
+          "members": 147
+        },
+        {
+          "word": "justiceinpolicing",
+          "log_ratio": 4.6479,
+          "d_tweets": 185,
+          "r_tweets": 0,
+          "members": 90
+        },
+        {
+          "word": "eranow",
+          "log_ratio": 4.5281,
+          "d_tweets": 164,
+          "r_tweets": 0,
+          "members": 100
+        },
+        {
+          "word": "homeishere",
+          "log_ratio": 4.491,
+          "d_tweets": 158,
+          "r_tweets": 0,
+          "members": 101
+        }
+      ],
+      "R": [
+        {
+          "word": "bidenbordercrisis",
+          "log_ratio": 5.9918,
+          "d_tweets": 1,
+          "r_tweets": 448,
+          "members": 97
+        },
+        {
+          "word": "utpol",
+          "log_ratio": 5.9439,
+          "d_tweets": 0,
+          "r_tweets": 213,
+          "members": 6
+        },
+        {
+          "word": "housecommerce",
+          "log_ratio": 5.7819,
+          "d_tweets": 0,
+          "r_tweets": 181,
+          "members": 26
+        },
+        {
+          "word": "lockdowns",
+          "log_ratio": 5.7708,
+          "d_tweets": 0,
+          "r_tweets": 179,
+          "members": 69
+        },
+        {
+          "word": "unspent",
+          "log_ratio": 5.5266,
+          "d_tweets": 0,
+          "r_tweets": 140,
+          "members": 83
+        },
+        {
+          "word": "timburchett",
+          "log_ratio": 5.4869,
+          "d_tweets": 1,
+          "r_tweets": 270,
+          "members": 4
+        },
+        {
+          "word": "savehyde",
+          "log_ratio": 5.4757,
+          "d_tweets": 0,
+          "r_tweets": 133,
+          "members": 97
+        },
+        {
+          "word": "unborn",
+          "log_ratio": 5.4142,
+          "d_tweets": 1,
+          "r_tweets": 251,
+          "members": 116
+        },
+        {
+          "word": "dailycaller",
+          "log_ratio": 5.3819,
+          "d_tweets": 0,
+          "r_tweets": 121,
+          "members": 53
+        },
+        {
+          "word": "houseforeigngop",
+          "log_ratio": 5.2964,
+          "d_tweets": 0,
+          "r_tweets": 111,
+          "members": 25
+        }
+      ]
+    },
+    "no_markers": {
+      "D": [
+        {
+          "word": "nevadans",
+          "log_ratio": 4.0761,
+          "d_tweets": 104,
+          "r_tweets": 0,
+          "members": 3
+        },
+        {
+          "word": "reproductive",
+          "log_ratio": 3.9439,
+          "d_tweets": 183,
+          "r_tweets": 1,
+          "members": 103
+        },
+        {
+          "word": "bronx",
+          "log_ratio": 3.933,
+          "d_tweets": 90,
+          "r_tweets": 0,
+          "members": 9
+        },
+        {
+          "word": "equitably",
+          "log_ratio": 3.9108,
+          "d_tweets": 88,
+          "r_tweets": 0,
+          "members": 59
+        },
+        {
+          "word": "breonna",
+          "log_ratio": 3.8765,
+          "d_tweets": 85,
+          "r_tweets": 0,
+          "members": 61
+        },
+        {
+          "word": "inequity",
+          "log_ratio": 3.7262,
+          "d_tweets": 73,
+          "r_tweets": 0,
+          "members": 59
+        },
+        {
+          "word": "forprofit",
+          "log_ratio": 3.6268,
+          "d_tweets": 66,
+          "r_tweets": 0,
+          "members": 33
+        },
+        {
+          "word": "nj",
+          "log_ratio": 3.6218,
+          "d_tweets": 199,
+          "r_tweets": 2,
+          "members": 19
+        },
+        {
+          "word": "confederate",
+          "log_ratio": 3.581,
+          "d_tweets": 63,
+          "r_tweets": 0,
+          "members": 48
+        },
+        {
+          "word": "granite",
+          "log_ratio": 3.581,
+          "d_tweets": 63,
+          "r_tweets": 0,
+          "members": 2
+        }
+      ],
+      "R": [
+        {
+          "word": "lockdowns",
+          "log_ratio": 5.7708,
+          "d_tweets": 0,
+          "r_tweets": 179,
+          "members": 69
+        },
+        {
+          "word": "unspent",
+          "log_ratio": 5.5266,
+          "d_tweets": 0,
+          "r_tweets": 140,
+          "members": 83
+        },
+        {
+          "word": "unborn",
+          "log_ratio": 5.4142,
+          "d_tweets": 1,
+          "r_tweets": 251,
+          "members": 116
+        },
+        {
+          "word": "jobkilling",
+          "log_ratio": 5.0665,
+          "d_tweets": 0,
+          "r_tweets": 88,
+          "members": 44
+        },
+        {
+          "word": "amnesty",
+          "log_ratio": 4.5291,
+          "d_tweets": 3,
+          "r_tweets": 207,
+          "members": 83
+        },
+        {
+          "word": "cuomos",
+          "log_ratio": 4.5146,
+          "d_tweets": 3,
+          "r_tweets": 204,
+          "members": 44
+        },
+        {
+          "word": "dictadura",
+          "log_ratio": 4.5097,
+          "d_tweets": 0,
+          "r_tweets": 50,
+          "members": 4
+        },
+        {
+          "word": "coverup",
+          "log_ratio": 4.3771,
+          "d_tweets": 2,
+          "r_tweets": 133,
+          "members": 36
+        },
+        {
+          "word": "castrista",
+          "log_ratio": 4.3391,
+          "d_tweets": 0,
+          "r_tweets": 42,
+          "members": 4
+        },
+        {
+          "word": "disguised",
+          "log_ratio": 4.3391,
+          "d_tweets": 0,
+          "r_tweets": 42,
+          "members": 28
+        }
+      ]
+    }
+  },
+  "figure": "results/figures/exp2_top_words.png"
+}
