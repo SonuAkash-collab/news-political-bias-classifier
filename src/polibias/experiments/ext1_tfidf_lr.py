@@ -249,13 +249,16 @@ def verdict(tweet: dict, articles: dict) -> str:
     return " ".join(parts)
 
 
-def plot(tweet_rows: list[tuple[str, dict]], article_rows: list[tuple[str, dict]], tweet_base: dict, article_base: dict) -> str:
-    """Accuracy and macro F1 per model, on held-out tweets (left) and on articles (right)."""
+def plot(tweet_rows: list[tuple[str, dict]], article_rows: list[tuple[str, dict]]) -> str:
+    """Accuracy and macro F1 per model, on held-out tweets (left) and on articles (right).
+
+    The majority baseline is the first group in each panel, so no separate baseline line is drawn.
+    """
     fig, axes = new_figure(width=14, height=6.2, ncols=2, sharey=True,
                            gridspec_kw={"width_ratios": [len(tweet_rows), max(len(article_rows), 2)]})
-    for ax, rows, base, title in (
-        (axes[0], tweet_rows, tweet_base, "Held-out congresspeople (grouped tweet test)"),
-        (axes[1], article_rows, article_base, "AllSides left/right articles (media-based test)"),
+    for ax, rows, title in (
+        (axes[0], tweet_rows, "Held-out congresspeople (grouped tweet test)"),
+        (axes[1], article_rows, "AllSides left/right articles (media-based test)"),
     ):
         x = np.arange(len(rows))
         width = 0.38
@@ -263,9 +266,6 @@ def plot(tweet_rows: list[tuple[str, dict]], article_rows: list[tuple[str, dict]
             values = [100 * row[metric] for _, row in rows]
             bars = ax.bar(x + offset * width, values, width * 0.94, label=label, **bar_style(color))
             ax.bar_label(bars, fmt="%.1f", padding=2, fontsize=8.5, color=config.MIDNIGHT)
-        ax.axhline(100 * base["accuracy"], color=config.MUTED, linestyle="--", linewidth=1.1)
-        ax.text(len(rows) - 0.5, 100 * base["accuracy"] + 1, f"always D: accuracy {100 * base['accuracy']:.1f}",
-                ha="right", va="bottom", fontsize=8.5, color=config.MUTED)
         ax.set_xticks(x, [name for name, _ in rows], fontsize=9)
         ax.set_title(title, fontsize=12, fontfamily="serif", pad=10)
         ax.set_ylim(0, 100)
@@ -332,7 +332,7 @@ def main() -> dict:
         ("LinearSVC (C=0.06)\ncounts", article_result["paper_linear_svc_counts"]),
         ("Ext 1: TF-IDF LR\nuni + bigrams", ext1_articles),
     ]
-    figure = plot(tweet_rows, article_rows, tweet_base, article_result["majority_baseline"])
+    figure = plot(tweet_rows, article_rows)
 
     result = {
         "description": "Extension 1: TF-IDF word unigrams + bigrams (no_punct) with logistic regression",
