@@ -147,7 +147,7 @@ To run one step on its own, give its name to `--only`. Several names can be give
 | `model_zoo` | LinearSVC, logistic regression and Complement NB tuned with grouped cross-validation, plus an RBF SVM and a majority baseline, on the grouped tweet split | `results/model_zoo.json`, `results/figures/model_zoo.png`, `models/*.joblib` |
 | `exp1` | Paper Experiment 1: the three paper models on held-out tweets, random split against grouped split, for the three vocabulary variants | `results/exp1.json`, `results/figures/exp1_tweet_test.png` |
 | `exp2` | Paper Experiment 2: the ten most indicative words per party for each vocabulary variant | `results/exp2.json`, `results/figures/exp2_top_words.png` |
-| `exp3` | Paper Experiment 3: models trained on all tweets, tested on the left and right news articles | `results/exp3.json`, figures in `results/figures/` |
+| `exp3` | Paper Experiment 3: models trained on all tweets, tested on the left and right news articles | `results/exp3.json`, `results/figures/exp3_*.png` |
 | `ext1` | Extension 1: TF-IDF word unigrams and bigrams with logistic regression, tuned with grouped cross-validation | `results/ext1.json`, `results/figures/ext1_tfidf_lr.png`, `models/ext1_tfidf_lr.joblib` |
 | `ext2` | Extension 2: score each article in tweet-sized chunks and average the chunk probabilities | `results/ext2.json` |
 | `ext3` | Extension 3: train and test on articles to measure the cost of the tweet-to-article domain gap | `results/ext3.json` |

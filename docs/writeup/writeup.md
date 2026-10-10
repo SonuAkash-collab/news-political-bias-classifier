@@ -16,7 +16,7 @@ Bayes with a linear SVM on held-out tweets and on news articles.
 We reproduce the paper under a stricter evaluation. The paper splits tweets at random, so every
 congressperson appears in both train and test and a model can score by recognising people (handles,
 district names, pet phrases) rather than party language. Its SVM constant C = 0.06 was chosen on the
-tweet test set. Its news articles were labelled by a small poll and never released. We measure how much
+tweet test set. Its news test set is 100 articles labelled by a poll, which were never released. We measure how much
 the random split inflates accuracy, tune every hyperparameter without touching a test set, replace the
 private articles with a large public dataset, and test three changes aimed at the gap between tweets
 and articles.
@@ -28,8 +28,7 @@ and articles.
 companion congresstweets-automator project. We keep House members of party D or R, attach each tweet to
 its author through the account handle, and drop retweets and repeated texts. One member can own an
 office and a campaign account, so a person is identified by the Bioguide ID, not the handle. This leaves
-121,976 tweets from 450 members. Most are Democratic: always predicting D is right on 64.0% of a random
-20% test sample.
+121,976 tweets from 450 members: 78,136 Democratic and 43,840 Republican, so 64.1% of tweets are D.
 
 **News articles.** In place of the paper's private articles we use the Article-Bias-Prediction dataset
 of Baly et al. (EMNLP 2020), labelled left, center or right by AllSides. Its media-based split keeps each
