@@ -12,7 +12,18 @@ Why this should help (the hypothesis, written before the results):
     LR       Logistic regression gives calibrated probabilities (the demo shows them) and, like
              LinearSVC, handles hundreds of thousands of sparse features.
 
-What we found: see "verdict" in results/ext1.json and the RESULTS comment at the end of this file.
+What we found (full run; numbers from results/ext1.json, grouped split, 90 held-out members):
+    Tweets   It helps. Macro F1 0.824 (accuracy 0.833) against 0.795 for the best Exp 1 model
+             (LinearSVC, C = 0.06, counts) and 0.798 for the tuned count logistic regression of the
+             model zoo. Most of the gain is the bigrams: the same model with unigrams only scores
+             0.804, so TF-IDF weighting on its own adds under 1 point and bigrams add 2.
+    Articles It does not really help. Macro F1 0.591 against 0.587 for the paper's count LinearSVC
+             on the same 1,001 articles, and accuracy 0.592 is below always predicting "right"
+             (0.598, the article test majority). Better tweet features do not carry over to news
+             articles; the gap is a domain problem (length, style, topics), not a feature problem.
+    Tuning   C = 10, min_df = 2, class_weight = "balanced" (CV macro F1 0.789). C = 10 is inside
+             the grid (30 scored lower); min_df = 2 is the smallest value tried, and the
+             class_weight choice barely matters (0.789 vs 0.789).
 
 Protocol. Tweets are split with evaluation.grouped_split (same 90 test members as Exp 1 and the
 model zoo). C, min_df and class_weight are chosen with 5-fold GroupKFold over member_id on the
@@ -67,7 +78,7 @@ EXP3_PATH = config.RESULTS_DIR / "exp3.json"
 
 VARIANT = "no_punct"
 CV_FOLDS = 5
-C_GRID = (0.3, 1.0, 3.0, 10.0)
+C_GRID = (0.3, 1.0, 3.0, 10.0, 30.0)
 MIN_DF_GRID = (2, 5, 10)
 CLASS_WEIGHT_GRID = (None, "balanced")
 QUICK_GRID = {"C": (1.0, 10.0), "min_df": (2,), "class_weight": (None, "balanced")}
