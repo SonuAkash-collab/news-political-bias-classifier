@@ -32,6 +32,7 @@ TEST_SIZE = 0.20
 CV_SPLITS = 5
 RBF_SUBSAMPLE_SIZE = 5_000
 CV_CACHE_DIR = config.DATA_DIR / "interim" / "model_zoo_cv_cache"
+RESULTS_PATH = config.RESULTS_DIR / "model_zoo.json"
 
 
 def _grouped_split(frame: pd.DataFrame, *, seed: int = config.SEED):
@@ -98,7 +99,7 @@ def _plot_scores(scores: dict, output: Path) -> None:
 def run_model_zoo(
     tweets: pd.DataFrame,
     *,
-    results_path: Path = config.RESULTS_JSON,
+    results_path: Path = RESULTS_PATH,
     figure_dir: Path = config.FIGURES_DIR,
     models_dir: Path = config.MODELS_DIR,
     seed: int = config.SEED,
@@ -198,7 +199,7 @@ def run_model_zoo(
     for name, model in models.items():
         path = models_dir / f"{name}.joblib"
         joblib.dump(model, path)
-        model_files[name] = str(path.relative_to(config.ROOT))
+        model_files[name] = path.relative_to(config.ROOT).as_posix()
 
     figure_path = figure_dir / "model_zoo.png"
     _plot_scores(scores, figure_path)
@@ -239,13 +240,9 @@ def run_model_zoo(
         "majority_baseline": baseline,
         "scores": scores,
         "models": model_files,
-        "figure": str(figure_path.relative_to(config.ROOT)),
+        "figure": figure_path.relative_to(config.ROOT).as_posix(),
         "rbf_svm_training_subsample": min(rbf_max_samples, len(train)),
     }
     results_path.parent.mkdir(parents=True, exist_ok=True)
-    all_results = {}
-    if results_path.exists():
-        all_results = json.loads(results_path.read_text(encoding="utf-8"))
-    all_results["model_zoo"] = result
-    results_path.write_text(json.dumps(all_results, indent=2) + "\n", encoding="utf-8")
+    results_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
