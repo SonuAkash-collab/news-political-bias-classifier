@@ -274,19 +274,29 @@ def run_ext2(
                 "macro_f1": float(f1_score(test_y, p_sz, average="macro", zero_division=0)),
             }
 
+        # Majority baseline on test articles (majority is R, 59.8%)
+        majority_label = "R" if (test_y == "R").sum() >= (test_y == "D").sum() else "D"
+        majority_acc = float((test_y == majority_label).mean())
+
         test_results[model_name] = {
             "whole_article": {
                 "accuracy": whole_acc,
                 "macro_f1": whole_mf1,
                 "accuracy_ci": whole_ci,
+                "accuracy_delta_vs_majority": whole_acc - majority_acc,
             },
             "chunk_voting": {
                 "chunk_size": best_chunk_size,
                 "accuracy": chunk_acc,
                 "macro_f1": chunk_mf1,
                 "accuracy_ci": chunk_ci,
-                "accuracy_delta": chunk_acc - whole_acc,
+                "accuracy_delta_vs_whole": chunk_acc - whole_acc,
+                "accuracy_delta_vs_majority": chunk_acc - majority_acc,
                 "macro_f1_delta": chunk_mf1 - whole_mf1,
+            },
+            "majority_baseline": {
+                "label": majority_label,
+                "accuracy": majority_acc,
             },
             "test_by_chunk_size": all_sizes_test,
         }
@@ -361,8 +371,10 @@ def _plot_ext2_comparison(
     ax.set_xticks(x)
     ax.set_xticklabels(labels, fontsize=10)
     ax.set_ylim(0, 0.8)
-    ax.axhline(0.5, color=config.MUTED, linestyle="--", linewidth=1.0, alpha=0.7, label="50% Chance")
-    ax.legend(frameon=False, loc="upper right")
+    ax.axhline(0.598, color=config.MUTED, linestyle="--", linewidth=1.2, alpha=0.85, label="Always R Baseline (59.8%)")
+    ax.axhline(0.402, color=config.MUTED, linestyle=":", linewidth=1.0, alpha=0.6, label="Always D (40.2%)")
+    ax.axhline(0.500, color=config.MUTED, linestyle="-.", linewidth=0.8, alpha=0.5, label="50% Chance")
+    ax.legend(frameon=False, loc="upper right", fontsize=8.5)
 
     for bar in list(b1) + list(b2):
         height = bar.get_height()

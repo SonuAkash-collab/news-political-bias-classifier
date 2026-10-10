@@ -117,6 +117,9 @@ def run_ext3(
     best_bin_model_name = "linear_svc"
     best_bin_acc = -1.0
 
+    majority_label = "R" if (y_test_bin == "R").sum() >= (y_test_bin == "D").sum() else "D"
+    majority_acc = float((y_test_bin == majority_label).mean())
+
     for name, (model, X_te, vec) in binary_models.items():
         preds = model.predict(X_te)
         acc = float(accuracy_score(y_test_bin, preds))
@@ -127,6 +130,7 @@ def run_ext3(
             "accuracy": acc,
             "macro_f1": mf1,
             "accuracy_ci": ci,
+            "accuracy_delta_vs_majority": acc - majority_acc,
             "confusion_matrix": cm,
         }
         if acc > best_bin_acc:

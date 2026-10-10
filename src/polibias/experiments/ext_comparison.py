@@ -145,7 +145,9 @@ def generate_comparison_figure(
     ax.set_xticks(x)
     ax.set_xticklabels(categories, fontsize=9.5)
     ax.set_ylim(0, 0.95)
-    ax.axhline(0.5, color=config.MUTED, linestyle="--", linewidth=1.1, alpha=0.7, label="Chance Baseline (50%)")
+    ax.axhline(0.598, color=config.MUTED, linestyle="--", linewidth=1.2, alpha=0.85, label="Always R Baseline (59.8%)")
+    ax.axhline(0.500, color=config.MUTED, linestyle=":", linewidth=1.0, alpha=0.6, label="50% Chance")
+    ax.legend(frameon=False, loc="upper right", fontsize=8.5)
 
     for bar in bars:
         h = bar.get_height()
@@ -162,18 +164,18 @@ def generate_comparison_figure(
 
     note = (
         "Why each helps / does not help:\n"
-        "- Exp 3 vs Paper: 1,001 AllSides articles show paper's 63% on 100 articles had wide variance (95% CI [53%, 72%]).\n"
-        "- Ext 2 (Chunking): Aligns ~30-word tweet length with article text; mitigates word-count distribution shifts.\n"
-        "- Ext 3 (In-Domain): Exposes true domain cost. Training on articles eliminates social media vocabulary mismatch."
+        "- Exp 3 vs Paper: 1,001 AllSides articles (60% R) reveal paper's 63% on 100 articles is barely above the 59.8% always-R baseline.\n"
+        "- Ext 2 (Chunking): Honestly does NOT help for LinearSVC (51.8%) because calibration shifts decision boundaries on noisy fragments.\n"
+        "- Ext 3 (In-Domain): Reaches 66.5% (+6.7% over majority baseline), proving the domain gap from tweets to articles is the primary bottleneck."
     )
     ax.text(
         0.02,
         0.04,
         note,
         transform=ax.transAxes,
-        fontsize=8.2,
+        fontsize=8.0,
         color=config.MIDNIGHT,
-        bbox=dict(boxstyle="round,pad=0.5", facecolor=config.LIGHT, edgecolor=config.MUTED, alpha=0.8),
+        bbox=dict(boxstyle="round,pad=0.5", facecolor=config.LIGHT, edgecolor=config.MUTED, alpha=0.85),
     )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
