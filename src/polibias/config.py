@@ -1,5 +1,6 @@
 """Shared settings: paths, random seed, tweet date range and colour palette."""
 
+import os
 import random
 from datetime import date
 from pathlib import Path
@@ -16,10 +17,18 @@ USERS_FILE = RAW_DIR / "historical-users-filtered.json"
 PROCESSED_DIR = DATA_DIR / "processed"
 TWEETS_CSV = PROCESSED_DIR / "tweets.csv"
 ARTICLES_CSV = PROCESSED_DIR / "articles.csv"
-RESULTS_DIR = ROOT / "results"
+# Outputs. scripts/run_all.py --quick points POLIBIAS_OUTPUT_DIR somewhere else, so a fast check
+# never overwrites the real results and models. Inputs (data/) are never redirected.
+OUTPUT_DIR = Path(os.environ.get("POLIBIAS_OUTPUT_DIR", ROOT)).resolve()
+RESULTS_DIR = OUTPUT_DIR / "results"
 RESULTS_JSON = RESULTS_DIR / "results.json"
 FIGURES_DIR = RESULTS_DIR / "figures"
-MODELS_DIR = ROOT / "models"
+MODELS_DIR = OUTPUT_DIR / "models"
+
+# Quick mode (scripts/run_all.py --quick): keep only this fraction of congresspeople and articles.
+# 1.0 means the full data.
+SAMPLE_FRACTION = float(os.environ.get("POLIBIAS_SAMPLE_FRACTION", "1.0"))
+QUICK = SAMPLE_FRACTION < 1.0
 
 # Reproducibility
 SEED = 42
