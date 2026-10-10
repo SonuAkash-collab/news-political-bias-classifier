@@ -576,3 +576,24 @@ def run_exp3(
     results_path.parent.mkdir(parents=True, exist_ok=True)
     results_path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
+
+
+def main() -> dict[str, Any]:
+    from polibias.data.articles import load_processed as load_processed_articles
+    from polibias.data.tweets import load_processed as load_processed_tweets
+
+    config.set_seed()
+    tweets = load_processed_tweets()
+    articles = load_processed_articles()
+    result = run_exp3(
+        tweets,
+        articles,
+        results_path=config.RESULTS_DIR / "exp3.json",
+        figure_dir=config.FIGURES_DIR,
+    )
+    print(f"Saved {config.RESULTS_DIR / 'exp3.json'} and figures")
+    return result
+
+
+if __name__ == "__main__":
+    main()

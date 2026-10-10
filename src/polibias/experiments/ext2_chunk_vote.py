@@ -389,3 +389,26 @@ def _plot_ext2_comparison(
         )
 
     save_figure(fig, output_path)
+
+
+def main() -> dict[str, Any]:
+    from polibias.data.articles import load_processed as load_processed_articles
+    from polibias.data.tweets import load_processed as load_processed_tweets
+
+    config.set_seed()
+    tweets = load_processed_tweets()
+    articles = load_processed_articles()
+    sizes = (15, 30, 50) if config.QUICK else CANDIDATE_CHUNK_SIZES
+    result = run_ext2(
+        tweets,
+        articles,
+        candidate_chunk_sizes=sizes,
+        results_path=config.RESULTS_DIR / "ext2.json",
+        figure_dir=config.FIGURES_DIR,
+    )
+    print(f"Saved {config.RESULTS_DIR / 'ext2.json'} and figures")
+    return result
+
+
+if __name__ == "__main__":
+    main()

@@ -287,3 +287,31 @@ def _plot_ext3_results(
         ax2.text(b.get_x() + b.get_width() / 2, h + 0.02, f"{h:.1%}", ha="center", fontsize=9)
 
     save_figure(fig, output_path)
+
+
+def main() -> dict[str, Any]:
+    from polibias.data.articles import load_processed as load_processed_articles
+    from polibias.experiments.ext_comparison import generate_comparison_figure
+
+    config.set_seed()
+    articles = load_processed_articles()
+    result = run_ext3(
+        articles,
+        results_path=config.RESULTS_DIR / "ext3.json",
+        model_save_path=config.MODELS_DIR / "ext3_in_domain.joblib",
+        figure_dir=config.FIGURES_DIR,
+    )
+    try:
+        generate_comparison_figure(
+            results_dir=config.RESULTS_DIR,
+            output_path=config.FIGURES_DIR / "extension_comparison.png",
+        )
+    except Exception as exc:
+        print(f"Note: Comparison figure generation skipped: {exc}")
+
+    print(f"Saved {config.RESULTS_DIR / 'ext3.json'}, {config.MODELS_DIR / 'ext3_in_domain.joblib'}, and figures")
+    return result
+
+
+if __name__ == "__main__":
+    main()
