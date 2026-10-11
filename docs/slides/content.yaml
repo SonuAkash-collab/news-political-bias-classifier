@@ -186,19 +186,127 @@ slides:
       look at why.
 
   # ---------------- Person B: Experiment 3 to the end ----------------
-  # Rahul: replace the marker slide below with your slides (Experiment 3, Extensions 2 and 3,
-  # demo, conclusions, thank-you). A thank-you slide looks like this:
-  #   - layout: thankyou
-  #     title: Thank you
-  #     text: "Questions?"
-  #     side_text: "Team 16"
-  #     notes: >
-  #       ...
 
-  - layout: marker
-    section: Person B
-    title: "Person B slides"
-    heading: "Placeholder for Person B"
-    text: "Experiment 3 (news articles), Extensions 2 and 3, demo, conclusions and the thank-you slide go here."
+  - layout: figure
+    section: Results
+    title: "Experiment 3: tweets to news"
+    figure: results/figures/exp3_comparison.png
+    text: below
+    numbers:
+      - {value: "1,001", label: "public unseen articles"}
+    bullets:
+      - "Paper SVM: 63% on 100 private articles."
+      - "Our tuned tweet SVM: 58.4%, below the always-Right baseline of 59.8%."
+      - "Bernoulli and Multinomial Naive Bayes reach 60.6% and 60.5%."
     notes: >
-      Placeholder. Person B replaces this slide with Experiment 3 to the end of the deck.
+      This is our direct test of whether tweet-trained models transfer to news. The paper
+      reports 63% for SVM on 100 private articles. On 1,001 public articles, our tuned
+      tweet SVM scores 58.4%, below the 59.8% always-Right baseline. Bernoulli and
+      Multinomial Naive Bayes are slightly above that baseline at 60.6% and 60.5%.
+
+  - layout: figure
+    section: Analysis
+    title: "Where the model still fails"
+    figure: results/figures/exp3_accuracy_by_source.png
+    text: below
+    bullets:
+      - "Accuracy changes sharply across outlets. CNN is below the 50% line."
+      - "A report can be labelled by its outlet even when the wording is neutral."
+      - "Words such as conservative and spending can pull a prediction the wrong way."
+    notes: >
+      Transfer errors vary by outlet. CNN is below the 50% line in this chart, while
+      some outlets are substantially higher. Examples include a CNN report on spending
+      cuts classified as Right and a Salon article mentioning conservative politics
+      classified as Right. This suggests that labels inherited from an outlet do not
+      always match the language of one article.
+
+  - layout: figure
+    section: Extensions
+    title: "Extension 2: chunk voting"
+    figure: results/figures/ext2_chunk_voting.png
+    text: below
+    numbers:
+      - {value: "50 words", label: "chunk size chosen on validation data"}
+    bullets:
+      - "Split each article into chunks, score each chunk, then average the scores."
+      - "Bernoulli Naive Bayes changes only from 60.6% to 60.8%."
+      - "LinearSVC falls from 58.4% to 51.8%."
+      - "Chunking does not reliably close the tweet-to-news gap."
+    notes: >
+      We selected 50-word chunks using the training validation data. Chunk voting gives
+      Bernoulli Naive Bayes a small accuracy increase from 60.6% to 60.8%, but it drops
+      tuned LinearSVC from 58.4% to 51.8%. The result is mixed, so we do not claim that
+      chunking is a general improvement.
+
+  - layout: figure
+    section: Extensions
+    title: "Extension 3: train on articles"
+    figure: results/figures/ext3_in_domain.png
+    text: below
+    numbers:
+      - {value: "+6.7 points", label: "over the always-Right baseline"}
+    bullets:
+      - "Train on 19,102 AllSides articles, then test on 1,001 unseen articles."
+      - "LinearSVC reaches 66.5% accuracy and 65.8% macro F1."
+      - "The three-class task is harder: the best model reaches 53.7%."
+    notes: >
+      Training on news articles reduces the domain mismatch. LinearSVC scores 66.5%
+      accuracy and 65.8% macro F1, which is 6.7 percentage points above the 59.8%
+      always-Right baseline. The three-class Left, Center, Right version remains harder:
+      Multinomial Naive Bayes is best there at 53.7% accuracy.
+
+  - layout: steps
+    section: Demo
+    title: "Live demo: three steps"
+    steps:
+      - title: "1. Easy correct case"
+        text: "Score the Breitbart article with the article-trained model."
+      - title: "2. Show a failure"
+        text: "Use the CNN article, then switch to the tweet SVM for comparison."
+      - title: "3. Paste a sentence"
+        text: "Show the uncertain free-text result. The CLI is ready as a fallback."
+    notes: >
+      Follow docs/demo_script.md. First, score the Breitbart article, where the
+      article-trained model correctly predicts Right. Second, show the CNN example that
+      the article model predicts as Right, then switch to the tweet-trained SVM, which
+      predicts Left. Third, paste the prepared free-text sentence and point out the
+      near-even result. Keep this slide and the live walk-through to these three steps.
+
+  - layout: numbers_top
+    section: Results
+    title: "Results at a glance"
+    numbers:
+      - {value: "83.3%", label: "best tweet accuracy, Extension 1"}
+      - {value: "66.5%", label: "best article accuracy, Extension 3"}
+      - {value: "59.8%", label: "always-Right article baseline"}
+    bullets:
+      - "Training and testing within the same domain gives the clearest improvement."
+    notes: >
+      These numbers use different test settings, so they should not be compared as if
+      they came from the same task. Extension 1 reaches 83.3% on the grouped tweet test.
+      Extension 3 reaches 66.5% on the article test. The article majority baseline is
+      59.8%, so in-domain article training provides the clearest gain on that task.
+
+  - layout: bullets
+    section: Conclusions
+    title: "Limitations and next steps"
+    bullets:
+      - "Labels come from politicians and media outlets, so an individual text may not match its label."
+      - "Tweet-trained models do not transfer reliably to article language."
+      - "The three-class article task peaks at 53.7% accuracy."
+      - "Next: collect article-level labels and test on later time periods and new outlets."
+    notes: >
+      Our labels are proxies: a politician's party or an outlet's AllSides label. They
+      cannot describe every individual tweet or article perfectly. Tweet-trained models
+      also transfer poorly to news. The three-class article task reaches 53.7% at best.
+      Future work should collect article-level labels and evaluate across time periods
+      and outlets that were not part of development.
+
+  - layout: thankyou
+    section: Closing
+    title: "Thank you"
+    heading: "Questions?"
+    text: "Political bias classification from tweets and news articles"
+    notes: >
+      Thank the audience and invite questions. Keep the demo and results files ready
+      in case a question needs a quick example or an exact number.
