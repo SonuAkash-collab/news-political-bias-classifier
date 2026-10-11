@@ -277,9 +277,9 @@ All numbers below are on the **media-based split** of 1,001 AllSides test articl
 |---|---|---|---|
 | Majority baseline (always Right) | 59.8% | 0.374 | — |
 | Bernoulli NB | 60.6% | 0.590 | +0.8 pp |
-| Multinomial NB | 60.5% | 0.591 | +0.7 pp |
-| LinearSVC C=0.06 (paper's C) | 58.4% | 0.572 | −1.4 pp |
-| LinearSVC C=0.1 (tuned) | 59.2% | 0.577 | −0.6 pp |
+| Multinomial NB | 60.5% | 0.554 | +0.7 pp |
+| LinearSVC C=0.06 (paper's C) | 57.7% | 0.569 | −2.1 pp |
+| LinearSVC C=0.1 (tuned) | 58.4% | 0.574 | −1.4 pp |
 
 All tweet-trained models struggle on articles: the training domain (short, partisan social-media
 posts) differs substantially from journalistic prose.
@@ -288,8 +288,9 @@ posts) differs substantially from journalistic prose.
 
 | Extension | Accuracy | Macro F1 | vs. baseline |
 |---|---|---|---|
-| Ext 1: TF-IDF + LR — tweet-trained | 59.2% | 0.576 | −0.6 pp |
-| Ext 2: Chunk voting (50-word chunks, LinearSVC) | 59.2% | 0.577 | −0.6 pp |
+| Ext 1: TF-IDF + LR — tweet-trained | 59.2% | 0.591 | −0.6 pp |
+| Ext 2: Chunk voting (50-word chunks, Bernoulli NB) | 60.8% | 0.571 | +1.0 pp |
+| Ext 2: Chunk voting (50-word chunks, LinearSVC) | 51.8% | 0.513 | −8.0 pp |
 | Ext 3: LinearSVC — in-domain articles | **66.5%** | **0.658** | **+6.7 pp** |
 
 Extension 3 (in-domain training on AllSides articles with a media-based train/test split) gives
@@ -305,7 +306,9 @@ the largest improvement and is the model used by the demo.
 | LinearSVC balanced | 80.8% | 0.799 |
 | Logistic Regression | 80.9% | 0.793 |
 | Logistic Regression balanced | 80.8% | 0.798 |
-| Ext 1: TF-IDF + LR | 83.3% | 0.819 |
+| Ext 1: TF-IDF + LR | 83.3% | 0.824 |
 
-The grouped split (each congressperson entirely in train or test) is 15–20 pp below the paper's
-random split, which lets the model memorise author style rather than party language.
+On the grouped split (each congressperson entirely in train or test) accuracy is 5.0 points lower
+on average than on the paper's random split (range 2.1 to 6.8 points over the three paper models
+and three vocabulary variants, `results/exp1.json`). The random split lets a model recognise
+authors (handles, district names, pet phrases) instead of party language.
