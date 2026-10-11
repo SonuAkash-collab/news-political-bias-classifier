@@ -125,7 +125,8 @@ the results):
 python scripts/run_all.py
 ```
 
-With the data already downloaded, the full run takes about 15 minutes on a laptop. Each experiment
+With the data already downloaded, the full run takes about 40 minutes on a laptop (most of it
+in the model zoo, Extension 1 and Extension 3). Each experiment
 writes its own file in `results/` (for example `results/exp1.json`), its figures in
 `results/figures/` and any trained model in `models/`. At the end `run_all.py` merges every
 `results/*.json` into `results/results.json`, one key per experiment, and prints one summary line per
@@ -259,20 +260,28 @@ python app/cli.py --model ext1 --text "Gun rights are fundamental to American fr
 Available model keys: `ext3` (in-domain LinearSVC, best on articles), `ext1` (TF-IDF + LR),
 `linear` (LinearSVC tweet-trained), `logistic` (LR tweet-trained), `cnb` (Complement NB).
 
-The CLI prints an ASCII confidence bar and the driving vocabulary words:
+The CLI prints the prediction, a confidence bar and the words that pushed the prediction most.
+For the single-shot example above the output is:
 
 ```
 ====================================================================
- Political Bias Classifier — command-line interface
+ Political Bias Classifier - command-line interface
 ====================================================================
  Model : LinearSVC in-domain articles (Ext 3)
 --------------------------------------------------------------------
- Prediction  : Right (Republican)   (68.2% confidence)
-  Left  31.8% [############............................]
-  Right 68.2% [##########################..............]
- Driving words: energy  oil  gas  pipeline  federal  regulation
+ Prediction  : Right (Republican)
+ Confidence  : 61.5%
+
+  Left  38.5% [##############......................]
+  Right 61.5% [######################..............]
+
+ Driving words:
+  president  today  the  law
 ====================================================================
 ```
+
+The confidence is the model's decision score passed through a sigmoid, not a calibrated
+probability.
 
 ## Results
 
