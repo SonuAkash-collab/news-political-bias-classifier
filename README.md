@@ -2,10 +2,10 @@
 
 UE24CS352A Machine Learning, Mini-Project (Section D, Team 16, Problem 57)
 
-| Member | SRN |
-|---|---|
-| Sonu Akash Soundararajan | PES1UG24AM908 |
-| Rahul Saran Sharma | PES1UG24AM218 |
+| Member | SRN | GitHub |
+|---|---|---|
+| Sonu Akash Soundararajan | PES1UG24AM908 | [SonuAkash-collab](https://github.com/SonuAkash-collab) |
+| Rahul Saran Sharma | PES1UG24AM218 | [ZapCannonYT](https://github.com/ZapCannonYT) |
 
 ## Problem
 
