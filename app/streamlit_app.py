@@ -147,6 +147,10 @@ st.markdown(
       section[data-testid="stSidebar"] * {{
           color: {PALETTE["light"]} !important;
       }}
+      section[data-testid="stSidebar"] div[data-baseweb="select"] > div {{
+          background: {PALETTE["ocean_teal"]};
+          border-color: {PALETTE["ocean_teal"]};
+      }}
       section[data-testid="stSidebar"] .stSelectbox label,
       section[data-testid="stSidebar"] .stRadio label {{
           color: {PALETTE["light"]} !important;
@@ -175,6 +179,9 @@ st.markdown(
           letter-spacing: 0.04em;
           padding: 0.5rem 1.5rem;
           transition: background 0.18s;
+      }}
+      .stButton > button p {{
+          color: {PALETTE["light"]};
       }}
       .stButton > button:hover {{
           background: {PALETTE["turquoise"]};

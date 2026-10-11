@@ -1,0 +1,12 @@
+# Team palette (see src/polibias/config.py). Forces the light theme so the app looks the same
+# whatever the browser or operating system theme is.
+[theme]
+base = "light"
+primaryColor = "#088192"
+backgroundColor = "#F2EFE6"
+secondaryBackgroundColor = "#E6E1D3"
+textColor = "#051218"
+font = "sans serif"
+
+[browser]
+gatherUsageStats = false
