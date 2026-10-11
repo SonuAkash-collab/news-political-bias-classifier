@@ -162,7 +162,7 @@ def classify(text: str, model_key: str = DEFAULT_MODEL) -> None:
         sys.exit(1)
 
     print(_sep("="))
-    print(" Political Bias Classifier — command-line interface")
+    print(" Political Bias Classifier - command-line interface")
     print(_sep("="))
     print(f" Model : {name}")
     print(_sep())
@@ -244,7 +244,7 @@ def interactive(model_key: str = DEFAULT_MODEL) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Political bias classifier — command-line interface",
+        description="Political bias classifier - command-line interface",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Examples:\n"
