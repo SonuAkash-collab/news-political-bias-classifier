@@ -2,10 +2,10 @@
 
 UE24CS352A Machine Learning, Mini-Project (Section D, Team 16, Problem 57)
 
-| Member | SRN |
-|---|---|
-| Sonu Akash Soundararajan | PES1UG24AM908 |
-| Rahul Saran Sharma | PES1UG24AM218 |
+| Member | SRN | GitHub |
+|---|---|---|
+| Sonu Akash Soundararajan | PES1UG24AM908 | [SonuAkash-collab](https://github.com/SonuAkash-collab) |
+| Rahul Saran Sharma | PES1UG24AM218 | [ZapCannonYT](https://github.com/ZapCannonYT) |
 
 ## Problem
 
@@ -61,6 +61,10 @@ Check the install by running the tests. They use small fake data and need no dow
 python -m pytest
 ```
 
+Before the data is downloaded, 68 tests pass and 2 are skipped (about 30 seconds). The two skipped
+tests need `data/processed/`; once the data is downloaded (next section) all 70 run, and the full
+suite takes about 5 minutes because one of them runs `scripts/run_all.py --quick`.
+
 ## Data
 
 Raw and processed data are not stored in the repository (`data/raw/`, `data/interim/` and
@@ -90,9 +94,11 @@ News articles:
 python scripts/download_articles.py
 ```
 
-This downloads the Article-Bias-Prediction archive (a few hundred MB), extracts the article JSON files
+This downloads the Article-Bias-Prediction archive (about 135 MB), extracts the 37,554 article JSON files
 and the published splits into `data/raw/articles/`, and writes `data/processed/articles.csv` with
-the media-based split attached (`--split random` attaches the random split instead). Both download
+the media-based split attached (`--split random` attaches the random split instead). The media-based
+split assigns 30,246 of the 37,554 articles to train, validation or test (26,590 / 2,356 / 1,300);
+the rest are not in any split and are left out. Both download
 scripts skip files that are already present, so they can be re-run after an interruption.
 
 Sources and citations:
@@ -119,7 +125,8 @@ the results):
 python scripts/run_all.py
 ```
 
-With the data already downloaded, the full run takes about 15 minutes on a laptop. Each experiment
+With the data already downloaded, the full run takes about 40 minutes on a laptop (most of it
+in the model zoo, Extension 1 and Extension 3). Each experiment
 writes its own file in `results/` (for example `results/exp1.json`), its figures in
 `results/figures/` and any trained model in `models/`. At the end `run_all.py` merges every
 `results/*.json` into `results/results.json`, one key per experiment, and prints one summary line per
@@ -219,8 +226,10 @@ test set. It shows the predicted leaning (Left/Democratic or Right/Republican), 
 score derived from the model's decision boundary, and the vocabulary features that most pushed
 the prediction in that direction.
 
-**Prerequisites:** run `python scripts/run_all.py` at least once so that all `.joblib` files in
-`models/` exist.
+**Prerequisites:** the trained models in `models/` are committed, so typing or pasting text works
+straight after the setup above. The "Pick a test article" mode also needs
+`data/processed/articles.csv`, made by `python scripts/download_articles.py` (see [Data](#data)).
+`python scripts/run_all.py` re-trains every model and overwrites `models/`.
 
 ### Streamlit web interface (preferred)
 
@@ -251,20 +260,28 @@ python app/cli.py --model ext1 --text "Gun rights are fundamental to American fr
 Available model keys: `ext3` (in-domain LinearSVC, best on articles), `ext1` (TF-IDF + LR),
 `linear` (LinearSVC tweet-trained), `logistic` (LR tweet-trained), `cnb` (Complement NB).
 
-The CLI prints an ASCII confidence bar and the driving vocabulary words:
+The CLI prints the prediction, a confidence bar and the words that pushed the prediction most.
+For the single-shot example above the output is:
 
 ```
 ====================================================================
- Political Bias Classifier — command-line interface
+ Political Bias Classifier - command-line interface
 ====================================================================
  Model : LinearSVC in-domain articles (Ext 3)
 --------------------------------------------------------------------
- Prediction  : Right (Republican)   (68.2% confidence)
-  Left  31.8% [############............................]
-  Right 68.2% [##########################..............]
- Driving words: energy  oil  gas  pipeline  federal  regulation
+ Prediction  : Right (Republican)
+ Confidence  : 61.5%
+
+  Left  38.5% [##############......................]
+  Right 61.5% [######################..............]
+
+ Driving words:
+  president  today  the  law
 ====================================================================
 ```
+
+The confidence is the model's decision score passed through a sigmoid, not a calibrated
+probability.
 
 ## Results
 
@@ -277,9 +294,9 @@ All numbers below are on the **media-based split** of 1,001 AllSides test articl
 |---|---|---|---|
 | Majority baseline (always Right) | 59.8% | 0.374 | — |
 | Bernoulli NB | 60.6% | 0.590 | +0.8 pp |
-| Multinomial NB | 60.5% | 0.591 | +0.7 pp |
-| LinearSVC C=0.06 (paper's C) | 58.4% | 0.572 | −1.4 pp |
-| LinearSVC C=0.1 (tuned) | 59.2% | 0.577 | −0.6 pp |
+| Multinomial NB | 60.5% | 0.554 | +0.7 pp |
+| LinearSVC C=0.06 (paper's C) | 57.7% | 0.569 | −2.1 pp |
+| LinearSVC C=0.1 (tuned) | 58.4% | 0.574 | −1.4 pp |
 
 All tweet-trained models struggle on articles: the training domain (short, partisan social-media
 posts) differs substantially from journalistic prose.
@@ -288,8 +305,9 @@ posts) differs substantially from journalistic prose.
 
 | Extension | Accuracy | Macro F1 | vs. baseline |
 |---|---|---|---|
-| Ext 1: TF-IDF + LR — tweet-trained | 59.2% | 0.576 | −0.6 pp |
-| Ext 2: Chunk voting (50-word chunks, LinearSVC) | 59.2% | 0.577 | −0.6 pp |
+| Ext 1: TF-IDF + LR — tweet-trained | 59.2% | 0.591 | −0.6 pp |
+| Ext 2: Chunk voting (50-word chunks, Bernoulli NB) | 60.8% | 0.571 | +1.0 pp |
+| Ext 2: Chunk voting (50-word chunks, LinearSVC) | 51.8% | 0.513 | −8.0 pp |
 | Ext 3: LinearSVC — in-domain articles | **66.5%** | **0.658** | **+6.7 pp** |
 
 Extension 3 (in-domain training on AllSides articles with a media-based train/test split) gives
@@ -305,7 +323,9 @@ the largest improvement and is the model used by the demo.
 | LinearSVC balanced | 80.8% | 0.799 |
 | Logistic Regression | 80.9% | 0.793 |
 | Logistic Regression balanced | 80.8% | 0.798 |
-| Ext 1: TF-IDF + LR | 83.3% | 0.819 |
+| Ext 1: TF-IDF + LR | 83.3% | 0.824 |
 
-The grouped split (each congressperson entirely in train or test) is 15–20 pp below the paper's
-random split, which lets the model memorise author style rather than party language.
+On the grouped split (each congressperson entirely in train or test) accuracy is 5.0 points lower
+on average than on the paper's random split (range 2.1 to 6.8 points over the three paper models
+and three vocabulary variants, `results/exp1.json`). The random split lets a model recognise
+authors (handles, district names, pet phrases) instead of party language.

@@ -62,12 +62,12 @@
       "macro_f1_delta_vs_baseline": 0.0
     },
     "linear_svc": {
-      "accuracy": 0.8086156014623618,
-      "macro_f1": 0.7919925055797965,
+      "accuracy": 0.8086596485046029,
+      "macro_f1": 0.7920347490447145,
       "majority_baseline_accuracy": 0.61194555785579,
       "majority_baseline_macro_f1": 0.3796316537326484,
-      "accuracy_delta_vs_baseline": 0.1966700436065718,
-      "macro_f1_delta_vs_baseline": 0.4123608518471481
+      "accuracy_delta_vs_baseline": 0.19671409064881296,
+      "macro_f1_delta_vs_baseline": 0.4124030953120661
     },
     "linear_svc_balanced": {
       "accuracy": 0.8084394132933973,
@@ -111,14 +111,14 @@
     }
   },
   "models": {
-    "majority_baseline": "models\\majority_baseline.joblib",
-    "linear_svc": "models\\linear_svc.joblib",
-    "linear_svc_balanced": "models\\linear_svc_balanced.joblib",
-    "logistic_regression": "models\\logistic_regression.joblib",
-    "logistic_regression_balanced": "models\\logistic_regression_balanced.joblib",
-    "complement_nb": "models\\complement_nb.joblib",
-    "rbf_svm": "models\\rbf_svm.joblib"
+    "majority_baseline": "models/majority_baseline.joblib",
+    "linear_svc": "models/linear_svc.joblib",
+    "linear_svc_balanced": "models/linear_svc_balanced.joblib",
+    "logistic_regression": "models/logistic_regression.joblib",
+    "logistic_regression_balanced": "models/logistic_regression_balanced.joblib",
+    "complement_nb": "models/complement_nb.joblib",
+    "rbf_svm": "models/rbf_svm.joblib"
   },
-  "figure": "results\\figures\\model_zoo.png",
+  "figure": "results/figures/model_zoo.png",
   "rbf_svm_training_subsample": 5000
 }

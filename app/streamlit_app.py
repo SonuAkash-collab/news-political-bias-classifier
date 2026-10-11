@@ -147,6 +147,10 @@ st.markdown(
       section[data-testid="stSidebar"] * {{
           color: {PALETTE["light"]} !important;
       }}
+      section[data-testid="stSidebar"] div[data-baseweb="select"] > div {{
+          background: {PALETTE["ocean_teal"]};
+          border-color: {PALETTE["ocean_teal"]};
+      }}
       section[data-testid="stSidebar"] .stSelectbox label,
       section[data-testid="stSidebar"] .stRadio label {{
           color: {PALETTE["light"]} !important;
@@ -175,6 +179,9 @@ st.markdown(
           letter-spacing: 0.04em;
           padding: 0.5rem 1.5rem;
           transition: background 0.18s;
+      }}
+      .stButton > button p {{
+          color: {PALETTE["light"]};
       }}
       .stButton > button:hover {{
           background: {PALETTE["turquoise"]};
@@ -523,10 +530,10 @@ with st.expander("Accuracy reference — all models on news articles (1,001 AllS
             "LinearSVC — in-domain articles (Ext 3)",
         ],
         "Test accuracy": [
-            "59.8%", "60.6%", "60.5%", "58.4%", "59.2%", "59.2%", "66.5%",
+            "59.8%", "60.6%", "60.5%", "57.7%", "58.4%", "59.2%", "66.5%",
         ],
         "Macro F1": [
-            "0.374", "0.590", "0.591", "0.572", "0.577", "0.576", "0.658",
+            "0.374", "0.590", "0.554", "0.569", "0.574", "0.591", "0.658",
         ],
     }
     st.dataframe(pd.DataFrame(ref), use_container_width=True, hide_index=True)

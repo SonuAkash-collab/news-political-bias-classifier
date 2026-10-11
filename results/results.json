@@ -1503,7 +1503,38 @@
           ]
         ]
       },
-      "exp3": null
+      "exp3": [
+        {
+          "path": "scores/majority_baseline",
+          "accuracy": 0.5984015984015985,
+          "macro_f1": 0.374375
+        },
+        {
+          "path": "scores/bernoulli_nb",
+          "accuracy": 0.6063936063936064,
+          "macro_f1": 0.5901974231088944
+        },
+        {
+          "path": "scores/multinomial_nb",
+          "accuracy": 0.6053946053946054,
+          "macro_f1": 0.5539321368094124
+        },
+        {
+          "path": "scores/linear_svc_paper_c0.06",
+          "accuracy": 0.5774225774225774,
+          "macro_f1": 0.5694754983452042
+        },
+        {
+          "path": "scores/linear_svc_tuned_c0.1",
+          "accuracy": 0.5844155844155844,
+          "macro_f1": 0.5744743468166509
+        },
+        {
+          "path": "scores/linear_svc_balanced_c0.1",
+          "accuracy": 0.5804195804195804,
+          "macro_f1": 0.575751582278481
+        }
+      ]
     },
     "model": {
       "path": "models/ext1_tfidf_lr.joblib",
@@ -1743,6 +1774,7 @@
             0.6091326211712894,
             0.6685230809811692
           ],
+          "accuracy_delta_vs_majority": 0.040959040959040904,
           "confusion_matrix": [
             [
               177,
@@ -1761,6 +1793,7 @@
             0.591930839973973,
             0.6518886834215553
           ],
+          "accuracy_delta_vs_majority": 0.02397602397602394,
           "confusion_matrix": [
             [
               234,
@@ -1779,6 +1812,7 @@
             0.6355192624308632,
             0.6938858895851361
           ],
+          "accuracy_delta_vs_majority": 0.06693306693306689,
           "confusion_matrix": [
             [
               260,
@@ -1797,6 +1831,7 @@
             0.6355192624308632,
             0.6938858895851361
           ],
+          "accuracy_delta_vs_majority": 0.06693306693306689,
           "confusion_matrix": [
             [
               260,
@@ -1942,12 +1977,12 @@
         "macro_f1_delta_vs_baseline": 0.0
       },
       "linear_svc": {
-        "accuracy": 0.8086156014623618,
-        "macro_f1": 0.7919925055797965,
+        "accuracy": 0.8086596485046029,
+        "macro_f1": 0.7920347490447145,
         "majority_baseline_accuracy": 0.61194555785579,
         "majority_baseline_macro_f1": 0.3796316537326484,
-        "accuracy_delta_vs_baseline": 0.1966700436065718,
-        "macro_f1_delta_vs_baseline": 0.4123608518471481
+        "accuracy_delta_vs_baseline": 0.19671409064881296,
+        "macro_f1_delta_vs_baseline": 0.4124030953120661
       },
       "linear_svc_balanced": {
         "accuracy": 0.8084394132933973,
@@ -1991,15 +2026,15 @@
       }
     },
     "models": {
-      "majority_baseline": "models\\majority_baseline.joblib",
-      "linear_svc": "models\\linear_svc.joblib",
-      "linear_svc_balanced": "models\\linear_svc_balanced.joblib",
-      "logistic_regression": "models\\logistic_regression.joblib",
-      "logistic_regression_balanced": "models\\logistic_regression_balanced.joblib",
-      "complement_nb": "models\\complement_nb.joblib",
-      "rbf_svm": "models\\rbf_svm.joblib"
+      "majority_baseline": "models/majority_baseline.joblib",
+      "linear_svc": "models/linear_svc.joblib",
+      "linear_svc_balanced": "models/linear_svc_balanced.joblib",
+      "logistic_regression": "models/logistic_regression.joblib",
+      "logistic_regression_balanced": "models/logistic_regression_balanced.joblib",
+      "complement_nb": "models/complement_nb.joblib",
+      "rbf_svm": "models/rbf_svm.joblib"
     },
-    "figure": "results\\figures\\model_zoo.png",
+    "figure": "results/figures/model_zoo.png",
     "rbf_svm_training_subsample": 5000
   }
 }
