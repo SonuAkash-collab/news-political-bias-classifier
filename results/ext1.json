@@ -427,7 +427,38 @@
         ]
       ]
     },
-    "exp3": null
+    "exp3": [
+      {
+        "path": "scores/majority_baseline",
+        "accuracy": 0.5984015984015985,
+        "macro_f1": 0.374375
+      },
+      {
+        "path": "scores/bernoulli_nb",
+        "accuracy": 0.6063936063936064,
+        "macro_f1": 0.5901974231088944
+      },
+      {
+        "path": "scores/multinomial_nb",
+        "accuracy": 0.6053946053946054,
+        "macro_f1": 0.5539321368094124
+      },
+      {
+        "path": "scores/linear_svc_paper_c0.06",
+        "accuracy": 0.5774225774225774,
+        "macro_f1": 0.5694754983452042
+      },
+      {
+        "path": "scores/linear_svc_tuned_c0.1",
+        "accuracy": 0.5844155844155844,
+        "macro_f1": 0.5744743468166509
+      },
+      {
+        "path": "scores/linear_svc_balanced_c0.1",
+        "accuracy": 0.5804195804195804,
+        "macro_f1": 0.575751582278481
+      }
+    ]
   },
   "model": {
     "path": "models/ext1_tfidf_lr.joblib",
