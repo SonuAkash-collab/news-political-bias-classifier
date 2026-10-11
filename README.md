@@ -61,6 +61,10 @@ Check the install by running the tests. They use small fake data and need no dow
 python -m pytest
 ```
 
+Before the data is downloaded, 68 tests pass and 2 are skipped (about 30 seconds). The two skipped
+tests need `data/processed/`; once the data is downloaded (next section) all 70 run, and the full
+suite takes about 5 minutes because one of them runs `scripts/run_all.py --quick`.
+
 ## Data
 
 Raw and processed data are not stored in the repository (`data/raw/`, `data/interim/` and
@@ -221,8 +225,10 @@ test set. It shows the predicted leaning (Left/Democratic or Right/Republican), 
 score derived from the model's decision boundary, and the vocabulary features that most pushed
 the prediction in that direction.
 
-**Prerequisites:** run `python scripts/run_all.py` at least once so that all `.joblib` files in
-`models/` exist.
+**Prerequisites:** the trained models in `models/` are committed, so typing or pasting text works
+straight after the setup above. The "Pick a test article" mode also needs
+`data/processed/articles.csv`, made by `python scripts/download_articles.py` (see [Data](#data)).
+`python scripts/run_all.py` re-trains every model and overwrites `models/`.
 
 ### Streamlit web interface (preferred)
 
