@@ -280,6 +280,7 @@ slides:
       - {value: "66.5%", label: "best article accuracy, Extension 3"}
       - {value: "59.8%", label: "always-Right article baseline"}
     bullets:
+      - "The paper's random split inflated tweet accuracy by 5.0 points; holding out whole politicians gives the honest number."
       - "Training and testing within the same domain gives the clearest improvement."
     notes: >
       These numbers use different test settings, so they should not be compared as if
