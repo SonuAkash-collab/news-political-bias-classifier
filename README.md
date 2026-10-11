@@ -90,9 +90,11 @@ News articles:
 python scripts/download_articles.py
 ```
 
-This downloads the Article-Bias-Prediction archive (a few hundred MB), extracts the article JSON files
+This downloads the Article-Bias-Prediction archive (about 135 MB), extracts the 37,554 article JSON files
 and the published splits into `data/raw/articles/`, and writes `data/processed/articles.csv` with
-the media-based split attached (`--split random` attaches the random split instead). Both download
+the media-based split attached (`--split random` attaches the random split instead). The media-based
+split assigns 30,246 of the 37,554 articles to train, validation or test (26,590 / 2,356 / 1,300);
+the rest are not in any split and are left out. Both download
 scripts skip files that are already present, so they can be re-run after an interruption.
 
 Sources and citations:
